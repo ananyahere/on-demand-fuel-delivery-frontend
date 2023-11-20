@@ -1,0 +1,105 @@
+<div class="w-full flex flex-row mt-24 mb-8 justify-center items-center">
+    <div *ngIf="isLoading" class="flex justify-center h-[100%] items-center">
+      <app-loader></app-loader>
+    </div>
+    <div
+      *ngIf="!isLoading"
+      class="rounded-sm border border-gray-500 w-[70%] self-center bg-white p-5"
+    >
+      <form [formGroup]="userEditForm">
+        <div class="mt-5 text-xl font-medium">Change Name</div>
+        <label
+        class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Name</label
+      >
+      <input
+        type="text"
+        formControlName="name"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      />
+      <hr class="h-px my-8 bg-gray-500 border-0">
+        <div class="mt-5 text-xl font-medium">Add Address</div>
+        <label
+          class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Type</label
+        >
+        <input
+          type="text"
+          formControlName="type"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        />
+        <label
+          class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Receiver</label
+        >
+        <input
+          type="text"
+          formControlName="receiver"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        />
+        <label
+          class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Location</label
+        >
+        <input
+          type="text"
+          formControlName="location"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        />
+        <hr class="h-px my-8 bg-gray-500 border-0">
+        <div class="mt-5 text-xl font-medium">Add Vehicles</div>
+        <label
+          class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Model</label
+        >
+        <input
+          type="text"
+          formControlName="vehicleModel"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        />
+        <label
+          class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Color</label
+        >
+        <input
+          type="type"
+          formControlName="vehicleColor"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        />
+        <label
+          class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Fuel Type</label
+        >
+        <select
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          formControlName="vehicleFuelType"
+        >
+          <option selected>Choose a unit</option>
+          <option value="Petrol">Petrol</option>
+          <option value="Diesel">Diesel</option>
+          <option value="CNG">CNG</option>
+        </select>
+        <label
+          class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Car Type</label
+        >
+        <select
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          formControlName="vehicleCarType"
+        >
+          <option selected>Choose a unit</option>
+          <option value="Hatchback">Hatchback</option>
+          <option value="Wagon">Wagon</option>
+          <option value="Seden">Seden</option>
+          <option value="SUV">SUV</option>
+        </select>
+      </form>
+      <a
+        class="mt-6 flex items-center justify-center border border-transparent bg-[color:var(--darker-secondary-color)] hover:bg-[color:var(--darker-secondary-hover-color)] text-white rounded-md px-6 py-3 text-base font-medium shadow-sm"
+        (click)="onUpdateUserDetails()"
+      >
+        Update
+      </a>
+    </div>
+</div>
+

@@ -1,0 +1,62 @@
+<div class="p-10">
+  <div class="px-4 sm:px-0">
+    <h3 class="text-base font-semibold leading-7 text-gray-900">
+      Order History.
+    </h3>
+  </div>
+  <hr class="h-px my-6 bg-gray-700 border-0" />
+  <div
+    class="font-thin text-sm mb-3 border border-[color:var(--darker-secondary-color)]"
+    *ngFor="let order of orderHistory"
+  >
+    <div class="flex flex-col sm:flex-row justify-between p-3">
+      <div class="flex gap-3">
+        <div class="relative h-16 w-16 border border-gray-400">
+          <img
+            src="https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg"
+          />
+        </div>
+        <div class="flex flex-col">
+          <div class="text-lg">
+            {{ "Order to " + order.deliveryLoc.type }}
+          </div>
+          <div>{{ "Order Id: " + order.orderId }}</div>
+          <div class="text-green-800" (click)="verifyDeliveryPin()">Verify delivery PIN</div>
+        </div>
+      </div>
+      <button
+        *ngIf="!isAdmin"
+        type="submit"
+        (click)="onOpenDetails(order.orderId)"
+        class="flex justify-between items-center gap-3 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 h-full rounded hover:bg-[color:var(--secondary-color)] mt-3 mq"
+      >
+        More details
+      </button>
+      <button
+        *ngIf="isAdmin"
+        (click)="openUpdateStatusDialog(order.orderId)"
+        class="flex justify-between items-center gap-3 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 h-full rounded hover:bg-[color:var(--secondary-color)] mt-3 mq"
+      >
+        Update Status
+      </button>
+    </div>
+    <hr class="h-px my-2 mx-auto w-[95%] bg-gray-400 border-0" />
+    <div class="flex flex-col sm:flex-row justify-between p-3">
+      <div>
+        <span
+          class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded"
+        >
+          {{ order.orderStatus }}
+        </span>
+        <div class="mt-2">Delivered on Sat, Feb 4, 2023, 02:04 PM</div>
+      </div>
+      <div class="text-sm">
+        {{ "Total amount " }}
+        <span
+          class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+          >{{ "₹ " + order.totalAmount }}</span
+        >
+      </div>
+    </div>
+  </div>
+</div>

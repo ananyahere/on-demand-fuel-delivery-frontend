@@ -1,0 +1,148 @@
+<div className="m-2">
+  <div class="text-center text-3xl font-bold mt-24">
+    <!-- BACK BUTTON -->
+    <fa-icon [icon]="faArrowLeft" class="text-xl items-start mt-24 cursor-pointer" (click)="toHome()" ></fa-icon>
+    <!-- PAGE HEADING -->
+    Sign Up
+    </div>
+    <!-- PAGE CONTENT -->
+    <div class="max-w-3xl mx-auto mt-10">
+    <!-- STEPS NAV -->
+    <div class="flex items-center justify-center">
+        <!-- STEP-1 -->
+        <div
+          class="w-full h-24 lg:h-fit"
+          [ngClass]="currentStep === 1 ? 'font-medium' : ''"
+        >
+          <div
+            class="h-full border-2 border-l-0 px-5 py-2"
+            [ngClass]="
+              currentStep >= 1
+                ? 'text-white bg-[color:var(--darker-secondary-color)] border-r-white border-[color:var(--darker-secondary-color)]'
+                : 'border-[color:var(--darker-secondary-color)] border-dashed'
+            "
+          >
+            <div>01</div>
+            Setup Catch Phase
+          </div>
+        </div>
+        <!-- STEP-2 -->
+        <div
+          class="w-full h-24 lg:h-fit"
+          [ngClass]="currentStep === 2 ? 'font-medium' : ''"
+        >
+          <div
+            class="h-full border-2 rounded-l-0 px-5 py-2"
+            [ngClass]="
+              currentStep >= 2
+                ? 'text-white bg-[color:var(--darker-secondary-color)] border-r-white border-[color:var(--darker-secondary-color)]'
+                : 'border-[color:var(--darker-secondary-color)] border-dashed'
+            "
+          >
+            <div>02</div>
+            Setup Credentials
+          </div>
+        </div>
+        <!-- STEP-3 -->
+        <div
+          class="w-full h-24 lg:h-fit"
+          [ngClass]="currentStep === 2 ? 'font-medium' : ''"
+        >
+          <div
+            class="h-full border-2 border-l-0 rounded-r-lg px-5 py-2"
+            [ngClass]="
+              currentStep >= 3
+                ? 'text-white bg-[color:var(--darker-secondary-color)] border-r-white border-[color:var(--darker-secondary-color)]'
+                : 'border-[color:var(--darker-secondary-color)] border-dashed'
+            "
+          >
+            <div>03</div>
+            Sign In!
+          </div>
+        </div>
+    </div>
+    <!-- ERROR MESSAGE -->
+    <!-- SUCCESS MESSAGE -->
+    <!-- STEPS CONTENT -->
+    <div class="bg-white p-5 rounded-lg mt-2">
+        <!-- STEP-1 CONTENT -->
+        <form [formGroup]="setupCatchPhaseForm" *ngIf="currentStep == 1">
+          <label class="block mb-2 text-sm font-medium text-gray-700">
+            Enter your catch phase
+          </label>
+          <input
+            type="text"
+            formControlName="catchPhase"
+            name="catchPhase"
+            class="bg-gray-100 p-2 mx-2 mb-4 focus:outline-none rounded-lg w-full"
+          />
+          <button
+            type="submit"
+            class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+            (click)="OnSetCatchPhase()"
+          >
+            Save
+          </button>
+        </form>
+        <!-- STEP-2 CONTENT -->
+        <div *ngIf="currentStep == 2">
+          <form [formGroup]="signupForm">
+            <label
+              for="email"
+              class="block mb-2 text-sm font-medium text-gray-700"
+            >
+              Enter Email
+            </label>
+            <input
+              formControlName="email"
+              id="email"
+              name="email"
+              type="email"
+              class="bg-gray-100 p-2 mx-2 mb-4 focus:outline-none rounded-lg w-10/12"
+            />
+            <label
+              for="password"
+              class="block mb-2 text-sm font-medium text-gray-700"
+            >
+              Enter Password
+            </label>
+            <input
+              formControlName="password"
+              name="password"
+              type="password"
+              id="password"
+              class="bg-gray-100 p-2 mx-2 mb-4 focus:outline-none rounded-lg w-10/12"
+            />
+          </form>
+          <button
+            type="submit"
+            (click)="OnSubmitCredits()"
+            class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+          >
+            Submit
+          </button>
+        </div>
+        <!-- STEP-3 CONTENT -->
+        <div *ngIf="currentStep == 3">
+          <div
+            class="bg-green-50 border-b border-green-400 text-green-800 text-sm p-4 flex justify-between"
+          >
+            <div>
+              <div class="flex items-center">
+                <p>
+                  <span class="font-bold"> Congatulations! </span>
+                  You have successfully signed up!
+                </p>
+              </div>
+            </div>
+          </div>
+          <button
+            class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)] transition ease-in-out"
+            (click)="OnGoToSignIn()"
+          >
+            Sign in
+          </button>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,81 @@
+<div
+  class="w-full lg:max-w-md border lg:mx-6 border-gray-200 rounded-lg shadow"
+>
+  <div class="flow-root bg-white px-2">
+    <div *ngIf="currentOrder.orderItemsWithDetails === null ||  currentOrder.orderItemsWithDetails.length === 0" class="my-6 text-center">
+      <p>Order is Empty.</p>
+    </div>
+    <ul role="list" class="my-6 divide-y divide-gray-200 mx-3">
+      <li class="flex py-6" *ngFor="let item of currentOrder.orderItemsWithDetails">
+        <div
+          class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+        >
+          <img
+            src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg"
+            class="h-full w-full object-cover object-center"
+          />
+        </div>
+        <div class="ml-4 flex flex-1 flex-col">
+          <div>
+            <div
+              class="flex justify-between text-base font-medium text-gray-900"
+            >
+              <h3>
+                <a>{{ item.fuelDetail?.fuelType ?? "..." }}</a>
+              </h3>
+              <p class="ml-4">
+                ₹
+                {{
+                  item.fuelDetail?.basePriceHyd && item?.fuelQuantity
+                    ? item.fuelDetail?.basePriceHyd * item.fuelQuantity
+                    : "..."
+                }}
+              </p>
+            </div>
+            <p class="mt-1 text-sm text-gray-500">
+              Qty {{ item?.fuelQuantity ?? '...' }}
+              {{ item.fuelUnit ? item.fuelUnit : "Liters" }}
+            </p>
+          </div>
+          <div class="flex flex-1 items-end justify-between text-sm">
+            <div class="flex">
+              <button
+                type="button"
+                class="font-medium text-indigo-600 hover:text-indigo-500"
+                (click)="onRemoveFromOrder(item.fuelItemId)"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="border-t border-gray-200 px-4 py-6 sm:px-6 bg-white">
+    <div class="flex justify-between text-sm text-gray-500">
+      <p>Subtotal</p>
+      <p>₹ {{calculateOrderSubtotal()}}</p>
+    </div>
+    <div class="mt-6">
+      <a
+        class="flex items-center justify-center border border-transparent bg-[color:var(--darker-secondary-color)] hover:bg-[color:var(--darker-secondary-hover-color)] text-white rounded-md px-6 py-3 text-base font-medium shadow-sm"
+        (click)="openPlaceOrderDialog()"
+        >
+        Place Order
+      </a>
+    </div>
+    <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
+      <p>
+        or
+        <button
+          type="button"
+          class="font-medium text-[color:var(--darker-secondary-color)] hover:text-[color:var(--darker-secondary-hover-color)]"
+        >
+          Continue Shopping
+          <span aria-hidden="true"> &rarr;</span>
+        </button>
+      </p>
+    </div>
+  </div>
+</div>

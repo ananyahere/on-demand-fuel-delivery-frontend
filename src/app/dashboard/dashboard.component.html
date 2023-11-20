@@ -1,0 +1,53 @@
+<div class="flex m-auto">
+  <div class="flex mx-auto container">
+    <div
+      class="flex m-auto gap-4 lg:gap-8 overflow-y-hidden w-full h-[calc(88vh)]"
+    >
+      <!-- RENDER REGULAR FUEL-PRICE-SCREEN FOR MEDIUM & ABOVE SCREEN WIDTHS -->
+      <div
+        class="hidden md:flex flex-col p-4 sticky top-0 w-1/6 md:w-1/4 hover:overflow-auto"
+      >
+        <app-fuel-price></app-fuel-price>
+      </div>
+      <!-- RENDER FUEL-PRICE POPUP SCREEN FOR SMALL SCREENS -->
+      <div
+        *ngIf="isFuelPricePopup"
+        class="md:hidden fixed inset-0 z-10 bg-black bg-opacity-50 flex items-center justify-center"
+      >
+        <div class="bg-white rounded-lg p-4 w-5/6">
+          <app-fuel-price-mobile
+            (closeFuelPrices)="toggleFuelPrices()"
+          ></app-fuel-price-mobile>
+        </div>
+      </div>
+      <!-- RENDER THE MAIN CONTENT OF DASHBOARD -->
+      <div class="flex w-full md:w-[80%] mx-auto justify-between container">
+        <div class="p-10 overflow-y-auto w-full h-[calc(80vh)]">
+          <h2 class="text-lg font-medium mb-4">Fuels</h2>
+          <div *ngIf="isFuelListLoading" class="flex justify-center h-[100%] items-center">
+            <app-loader></app-loader>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- FUEL CARD -->
+            <p *ngIf="fuelList.length === 0">No Fuels Avaiable.</p>
+            <app-fuel-item
+              *ngFor="let fuelEle of fuelList"
+              (click)="openFuelDetailDialog(fuelEle)"
+              [fuel]="fuelEle"
+            ></app-fuel-item>
+          </div>
+        </div>
+        <!-- BOTTOM BUTTON TO OPEN THE FUEL-PRICE POPUP -->
+        <div class="md:hidden fixed bottom-3 right-3">
+          <button
+            class="md:hidden flex items-center justify-center w-[4rem] h-[4rem] text-white rounded-full bg-[color:var(--darker-secondary-color)] hover:bg-[color:var(--secondary-color)] hover:scale-105 shadow-lg cursor-pointer transition-all ease-in-out focus:outline-none"
+            title="Fuel Prices"
+            (click)="toggleFuelPrices()"
+          >
+            <fa-icon [icon]="faBars" class="w-6 h-6"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

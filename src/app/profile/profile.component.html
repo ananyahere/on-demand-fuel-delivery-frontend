@@ -1,0 +1,166 @@
+<div class="flex">
+      <div class="flex flex-col w-full">
+          <div class="h-80 bg-[url('https://w.forfun.com/fetch/b4/b499df2260fd44cf6cd641d011017501.jpeg')] bg-no-repeat bg-center bg-cover"></div>
+          <div class="flex flex-col lg:flex-row w-full ">
+              <div class="relative lg:-top-20 p-4 w-full lg:w-1/4">
+                  <div class="rounded-sm bg-white w-full h-full border border-gray-500 bg-blend-lighten hover:bg-blend-darken rounded-sm">
+                      <div class="p-5 text-base flex flex-col justify-center items-center">
+                          <div class="text-xl font-medium">
+                              {{currentUser.name}}
+                          </div>
+                          <div class="text-xl text-gray-600 mb-3">
+                              User
+                          </div>
+                          <div class="m-3 w-full flex flex-row justify-between">
+                              <div>Account</div>
+                              <div class="text-gray-500">
+                                  {{currentUser.userId}}
+                              </div>
+                          </div>
+                          <div class="m-3 w-full flex flex-row justify-between">
+                              <div>Email</div>
+                              <div class="text-gray-500">
+                                  {{currentUser.email}}
+                              </div>
+                          </div>
+                          <div class="mt-5">
+                              To edit account info,&nbsp;
+                              <span 
+                                class="cursor-pointer text-[color:var(--darker-secondary-color)]"
+                                (click)="onEditUserDetails()">
+                                  Click here
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="relative lg:-top-20 p-4 w-full lg:w-3/4">
+                  <div class="rounded-sm bg-white w-full h-full border border-gray-500 bg-blend-lighten hover:bg-blend-darken rounded-sm">
+                      <div class="text-base font-medium text-center text-gray-500 border-b border-gray-200">
+                          <ul class="flex flex-wrap -mb-px">
+                              <li class="me-2">
+                                  <a
+                                  class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                                  [ngClass]="activeTab === 'vehicle' ?  'border-[color:var(--darker-secondary-color)] text-[color:var(--darker-secondary-color)]' : 'border-transparent hover:text-gray-600 hover:border-gray-300'"
+                                  (click)="selectActiveTab('vehicle')"
+                                  >
+                                      Vehicles
+                                  </a>
+                              </li>
+                              <li class="me-2">
+                                  <a
+                                  class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                                  [ngClass]="activeTab === 'address' ?  'border-[color:var(--darker-secondary-color)] text-[color:var(--darker-secondary-color)]' : 'border-transparent hover:text-gray-600 hover:border-gray-300'"
+                                  (click)="selectActiveTab('address')"
+                                  >
+                                      Addresses
+                                  </a>
+                              </li>
+                              <li class="me-2">
+                                  <a
+                                  class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300"
+                                  [ngClass]="activeTab === 'payment-method' ?  'border-[color:var(--darker-secondary-color)] text-[color:var(--darker-secondary-color)]' : 'border-transparent hover:text-gray-600 hover:border-gray-300'"
+                                  (click)="selectActiveTab('payment-method')"
+                                  >
+                                      Payment methods
+                                  </a>
+                              </li>
+                          </ul>
+                      </div>
+                      <!-- ACTIVE-TAB IS VEHICLES -->
+                      <div *ngIf="activeTab === 'vehicle'" class="p-4 w-full">
+                        <cdk-accordion class="example-accordion">
+                            <cdk-accordion-item
+                              *ngFor="let item of currentUser.vehicles; track item; let index = $index"
+                              #accordionItem="cdkAccordionItem"
+                              class="example-accordion-item"
+                              role="button"
+                              tabindex="0"
+                              [attr.id]="'accordion-header-' + index"
+                              [attr.aria-expanded]="accordionItem.expanded"
+                              [attr.aria-controls]="'accordion-body-' + index">
+                              <div class="example-accordion-item-header truncate font-medium" (click)="accordionItem.toggle()">
+                                {{ item.vehicleModel }}
+                                <span class="example-accordion-item-description  text-[var(--darker-secondary-color)] hover:text-[var(--darker-secondary-hover-color)]">
+                                  {{ accordionItem.expanded ? 'Hide' : 'Show' }} details
+                                </span>
+                              </div>
+                              <div
+                                class="example-accordion-item-body"
+                                role="region"
+                                [style.display]="accordionItem.expanded ? '' : 'none'"
+                                [attr.id]="'accordion-body-' + index"
+                                [attr.aria-labelledby]="'accordion-header-' + index">
+                                {{ item.vehicleId }} <br>
+                                {{ item.vehicleCarType }} <br>
+                                {{ item.vehicleColor }} <br>
+                                {{ item.vehicleFuelType }}
+                              </div>
+                            </cdk-accordion-item>    
+                      </cdk-accordion>  
+                      </div>
+                      <!-- ACTIVE-TAB IS ADDRESS -->
+                      <div *ngIf="activeTab === 'address'" class="p-4 w-full">
+                        <cdk-accordion class="example-accordion">
+                            <cdk-accordion-item
+                              *ngFor="let item of currentUser.addresses; track item; let index = $index"
+                              #accordionItem="cdkAccordionItem"
+                              class="example-accordion-item"
+                              role="button"
+                              tabindex="0"
+                              [attr.id]="'accordion-header-' + index"
+                              [attr.aria-expanded]="accordionItem.expanded"
+                              [attr.aria-controls]="'accordion-body-' + index">
+                              <div class="example-accordion-item-header truncate font-medium" (click)="accordionItem.toggle()">
+                                {{ item.type }}
+                                <span class="example-accordion-item-description text-[var(--darker-secondary-color)] hover:text-[var(--darker-secondary-hover-color)]">
+                                    {{ accordionItem.expanded ? 'Hide' : 'Show' }} details
+                                </span>
+                              </div>
+                              <div
+                                class="example-accordion-item-body"
+                                role="region"
+                                [style.display]="accordionItem.expanded ? '' : 'none'"
+                                [attr.id]="'accordion-body-' + index"
+                                [attr.aria-labelledby]="'accordion-header-' + index">
+                                {{ item.receiver }} <br>
+                                {{ item.location }}
+                              </div>
+                            </cdk-accordion-item>    
+                      </cdk-accordion>
+                      </div>
+                      <!-- ACTIVE-TAB IS PAYMENT METHODS -->
+                      <div *ngIf="activeTab === 'payment-method'" class="p-4 w-full">
+                        <cdk-accordion class="example-accordion">
+                            <cdk-accordion-item
+                              *ngFor="let item of currentUser.paymentMethods; track item; let index = $index"
+                              #accordionItem="cdkAccordionItem"
+                              class="example-accordion-item"
+                              role="button"
+                              tabindex="0"
+                              [attr.id]="'accordion-header-' + index"
+                              [attr.aria-expanded]="accordionItem.expanded"
+                              [attr.aria-controls]="'accordion-body-' + index">
+                              <div class="example-accordion-item-header truncate font-medium" (click)="accordionItem.toggle()">
+                                {{ item }}
+                                <span class="example-accordion-item-description text-[var(--darker-secondary-color)] hover:text-[var(--darker-secondary-hover-color)]">
+                                  {{ accordionItem.expanded ? 'Hide' : 'Show' }} details
+                                </span>
+                              </div>
+                              <div
+                                class="example-accordion-item-body text-green-600"
+                                role="region"
+                                [style.display]="accordionItem.expanded ? '' : 'none'"
+                                [attr.id]="'accordion-body-' + index"
+                                [attr.aria-labelledby]="'accordion-header-' + index">
+                                Active
+                              </div>
+                            </cdk-accordion-item>    
+                        </cdk-accordion>                       
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <router-outlet></router-outlet>
+      </div>
+</div>

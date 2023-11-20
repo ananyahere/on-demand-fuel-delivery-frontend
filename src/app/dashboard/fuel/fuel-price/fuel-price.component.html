@@ -1,0 +1,63 @@
+<div class="p-6 overflow-hidden">
+  <h2 class="text-lg font-medium mb-2">Real-Time Fuel Prices</h2>
+  <div class="mb-2">
+    <div *ngIf="isLoading" class="flex justify-center h-[100%] items-center">
+      <app-loader></app-loader>
+    </div>
+    <div *ngIf="!isLoading" class="grid grid-cols-1 gap-5">
+      <div
+        class="h-44 lg:h-64 w-full mt-5 p-1 relative rounded"
+        *ngFor="let fuelPrice of fuelPricesList"
+      >
+        <div
+          class="bg-cover bg-center absolute inset-0 z-10 text-center"
+          [ngStyle]="{'background-image': 'url(' + getCitybgImage(fuelPrice.cityName) + ')'}"
+        >
+          <div
+            class="z-10 backdrop-brightness-50 p-1 text-white flex flex-col justify-between h-full"
+          >
+            <div class="p-3 font-bold text-4xl">
+              {{ fuelPrice.cityName }}
+            </div>
+            <div class="p-3 flex w-full flex-col font-bold text-xs lg:text-lg">
+              <div class="w-full flex flex-row justify-around">
+                <div>Petrol</div>
+                <div class="whitespace-pre font-thin">
+                  ₹ {{ fuelPrice.pricing["petrol"]["price"] }} /
+                  {{ fuelPrice.pricing["petrol"]["unit"] }}
+                </div>
+              </div>
+              <div class="w-full flex flex-row justify-around">
+                <div>Diesel</div>
+                <div class="whitespace-pre font-thin">
+                  ₹ {{ fuelPrice.pricing["diesel"]["price"] }} /
+                  {{ fuelPrice.pricing["diesel"]["unit"] }}
+                </div>
+              </div>
+              <div class="w-full flex flex-row justify-around">
+                <div>CNG</div>
+                <div class="whitespace-pre font-thin">
+                  ₹ {{ fuelPrice.pricing["cng"]["price"] }} /
+                  {{ fuelPrice.pricing["cng"]["unit"] }}
+                </div>
+              </div>
+              <div class="w-full flex flex-row justify-around">
+                <div>LPG</div>
+                <div class="whitespace-pre font-thin">
+                  ₹ {{ fuelPrice.pricing["lpg"]["price"] }} /
+                  {{ fuelPrice.pricing["lpg"]["unit"] }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+    class="w-full mt-2 text-white py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-800"
+    (click)="onGetFuelPrices()"
+  >
+    Get Latest Price
+  </button>
+  </div>
+</div>

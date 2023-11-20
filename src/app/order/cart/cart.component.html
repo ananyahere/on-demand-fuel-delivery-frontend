@@ -1,0 +1,66 @@
+<div class="p-10 pb-3 px-14">
+  <h3 class="text-2xl font-semibold leading-7 text-gray-900">
+    Shopping Cart.
+  </h3>
+</div>
+<div class="w-full lg:p-10 pt-3 flex flex-col lg:flex-row justify-between">
+  <div class="flex-1 border-[var(--darker-secondary-color)]">
+    <div class="flow-root px-2">
+      <ul role="list" class="my-6 mt-1divide-y divide-gray-300">
+        <li class="flex py-6 pt-3" *ngFor="let fuel of cart.fuelDetailsInCart">
+          <div
+            class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
+          >
+            <img
+              src="https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg"
+              class="h-full w-full object-cover object-center"
+            />
+          </div>
+          <div class="ml-4 flex flex-1 flex-col">
+            <div>
+              <div
+                class="flex justify-between text-base font-medium text-gray-900"
+              >
+                <h3>
+                  <a>{{ fuel.fuelDetail.fuelType }}</a>
+                </h3>
+                <p class="ml-4">
+                  ₹ {{ (fuel.fuelDetail.basePriceHyd * fuel.fuelQuantity).toFixed(2) }}
+                </p>
+              </div>
+              <p class="mt-1 text-sm text-gray-500">Qty {{ fuel.fuelQuantity }} {{fuel.fuelUnit ? fuel.fuelUnit : 'Liters'}}</p>
+            </div>
+            <div class="flex flex-1 items-end justify-between text-sm">
+              <button
+              type="button"
+              class="font-medium text-indigo-600 hover:text-indigo-500"
+              (click)="onBuy(fuel.fuelItemId)"
+            >
+              Buy
+            </button>
+              <div class="flex">
+                <button
+                  type="button"
+                  class="font-medium text-indigo-600 hover:text-indigo-500"
+                  (click)="onRemoveFromCart(fuel.fuelItemId)"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="border-t border-gray-300 px-4 py-6 sm:px-6">
+      <div class="flex justify-between text-base font-medium text-gray-900">
+        <p>Subtotal</p>
+        <p>₹ {{ calculateCartSubTotal() }}</p>
+      </div>
+      <p class="mt-0.5 text-sm text-gray-500">
+        Shipping and taxes calculated at checkout.
+      </p>
+    </div>
+  </div>
+  <app-order-summary class="mt-8 w-full lg:w-1/3 border-[var(--darker-secondary-color)] "></app-order-summary>
+</div>

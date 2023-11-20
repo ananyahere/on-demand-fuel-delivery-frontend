@@ -1,0 +1,48 @@
+<header class="absolute w-full z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="flex items-center justify-between h-20">
+            <nav class="flex grow">
+                <ul class="flex grow justify-end flex-wrap items-center">
+                    <!-- SIGNIN-OPTION DROPDOWN -->
+                    <li class="cursor-pointer">
+                        <button
+                        (click)="toggleDropdown()"
+                        class="flex items-center justify-center bg-[color:var(--darker-secondary-color)] text-white text-sm font-medium rounded-md w-28 h-10 focus:outline-none"
+                      >
+                        <span class="m-2">Sign In With</span>
+                        <fa-icon
+                          class="h-4 w-4"
+                          [icon]="showDropdown ? faAngleUp : faAngleDown"
+                        ></fa-icon>
+                      </button>
+                      <div
+                      *ngIf="showDropdown"
+                      class="mt-1 absolute min-w-[231px] right-0 bg-white rounded-md overflow-hidden shadow-lg z-10"
+                    >
+                      <div
+                        class="py-4 group hover:bg-[color:var(--darker-secondary-color)] transition-all ease-in-out"
+                      >
+                        <button
+                          class="text-left w-full px-4 text-gray-800 group-hover:text-white transition-all ease-in-out"
+                          (click)="toMobileSignin()"
+                        >
+                          Phone number
+                        </button>
+                      </div>
+                      <div
+                        class="py-4 group hover:bg-[color:var(--darker-secondary-color)] transition-all ease-in-out"
+                      >
+                        <button
+                          class="line-through text-left w-full px-4 text-gray-800 group-hover:text-white transition-all ease-in-out"
+                          (click)="toPageNotFound()"
+                        >
+                          Github
+                        </button>
+                      </div>
+                    </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
