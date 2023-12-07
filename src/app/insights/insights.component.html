@@ -1,0 +1,56 @@
+<div class="p-4 container">
+  <div class="px-4 sm:px-0">
+    <h3 class="text-2xl font-semibold leading-7 text-gray-900">Fuel Prices.</h3>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="bg-[color:var(--white-color)] rounded-lg shadow-md px-3 py-3 mt-3" *ngFor="let fuel of insights">
+        <div class="flex flex-row justify-between items-start">
+                <p class="text-sm text-gray-800 font-bold">
+                    {{fuel.fuelType}}
+                </p>
+                <p class="text-sm text-green-500">
+                    <strong class="whitespace-nowrap">{{fuel.fuelInStock}} Liters</strong>
+                </p>
+        </div>
+    </div>
+  </div>
+  <div *ngIf="isLoadingInsights" class="flex justify-center h-[100%] items-center">
+    <app-loader></app-loader>
+  </div>
+  <div  
+    *ngIf="!isLoadingInsights" class="flex justify-center items-center mt-5">
+    <form
+      class="flex flex-col md:flex-row justify-between w-full"
+      [formGroup]="filterFuelForm"
+    >
+      <div class="flex flex-wrap md:mr-4">
+        <div class="flex items-center me-4" *ngFor="let fuel of fuels">
+          <input
+            formControlName="selectedFuel"
+            type="radio"
+            [value]="fuel"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+          />
+          <label
+            class="ms-2 text-sm font-medium text-gray-900"
+            >{{fuel}}</label
+          >
+        </div>
+      </div>
+    </form>
+  </div>
+  <div
+    *ngIf="!isLoadingInsights"
+    class="transition-all mt-3 h-1/2 md:ml-36 bg-[color:var(--white-color)] rounded-lg shadow-md px-3 py-3 max-w-lg"
+  >
+    <canvas
+      baseChart
+      class="chart"
+      [data]="pieChartData"
+      [type]="pieChartType"
+      [options]="pieChartOptions"
+      [plugins]="pieChartPlugins"
+    >
+    </canvas>
+  </div>
+</div>

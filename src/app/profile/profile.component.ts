@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { EditAddressDialogComponent } from 'src/shared/component/edit-address-dialog/edit-address-dialog.component';
 import { User } from 'src/shared/model/user.model';
 import { UserService } from 'src/shared/service/user.service';
 
@@ -10,63 +12,27 @@ import { UserService } from 'src/shared/service/user.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
-  expandedIndex = 0;
+  expandedIndex: number = 0;
   activeTab: string = "vehicle"
   isLoading: boolean;
   constructor(
     private router: Router,
     private userService: UserService,
     private snackbar: MatSnackBar,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private editAddressDialog: MatDialog,
   ){}
-  currentUser: User = {
-    userId: "U001",
-    name: "John Doe",
-    email: "johndoe@example.com",
-    addresses: [
-      {
-        addressId: null,
-        type: "Home",
-        receiver: "John Doe",
-        location: "123 Main Street, Springfield"
-      },
-      {
-        addressId: null,
-        type: "Work",
-        receiver: "John Doe",
-        location: "456 Broad Avenue, Gotham City"
-      }
-    ],
-    vehicles: [
-      {
-        vehicleId: "V001",
-        vehicleModel: "Toyota Camry",
-        vehicleColor: "Red",
-        vehicleFuelType: "Petrol",
-        vehicleCarType: "Sedan"
-      },
-      {
-        vehicleId: "V002",
-        vehicleModel: "Honda Civic",
-        vehicleColor: "Blue",
-        vehicleFuelType: "Petrol",
-        vehicleCarType: "Sedan"
-      }
-    ],
-    paymentMethods: [
-      "Credit Card",
-      "Debit Card"
-    ]
-  }
+  currentUser: User
+  isAdmin: boolean = false;
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      // Gets the 'id' parameter 
       const userId = params.get('id');
       this.isLoading = true;
       this.userService.getUserById(userId).subscribe(
         (user) => {
-          console.log('getUserById: ', user);
+          // get current user details
           this.currentUser = user;
           this.isLoading = false;
         },
@@ -80,46 +46,11 @@ export class ProfileComponent implements OnInit {
               verticalPosition: 'bottom', // Position of the snackbar on screen
             }
           );
-          this.currentUser = {
-            userId: 'U001',
-            name: 'John Doe',
-            email: 'johndoe@example.com',
-            addresses: [
-              {
-                addressId: null,
-                type: 'Home',
-                receiver: 'John Doe',
-                location: '123 Main Street, Springfield',
-              },
-              {
-                addressId: null,
-                type: 'Work',
-                receiver: 'John Doe',
-                location: '456 Broad Avenue, Gotham City',
-              },
-            ],
-            vehicles: [
-              {
-                vehicleId: 'V001',
-                vehicleModel: 'Toyota Camry',
-                vehicleColor: 'Red',
-                vehicleFuelType: 'Petrol',
-                vehicleCarType: 'Sedan',
-              },
-              {
-                vehicleId: 'V002',
-                vehicleModel: 'Honda Civic',
-                vehicleColor: 'Blue',
-                vehicleFuelType: 'Petrol',
-                vehicleCarType: 'Sedan',
-              },
-            ],
-            paymentMethods: ['Credit Card', 'Debit Card'],
-          };
           this.isLoading = false;
         }
       );
     });
+    this.isAdmin = this.userService.isAdmin()
   }
   
   public selectActiveTab(tab: string){
@@ -127,5 +58,10 @@ export class ProfileComponent implements OnInit {
   }
   public onEditUserDetails(){
     this.router.navigate(['profile/edit', this.currentUser.userId])
+  }
+  public openEditAddressDialog(address){
+    this.editAddressDialog.open(EditAddressDialogComponent, {
+      data: address
+    })
   }
 }

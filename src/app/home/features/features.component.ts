@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IconDefinition, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-features',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./features.component.css']
 })
 export class FeaturesComponent {
-
+  faCheck: IconDefinition = faCheck;
 }

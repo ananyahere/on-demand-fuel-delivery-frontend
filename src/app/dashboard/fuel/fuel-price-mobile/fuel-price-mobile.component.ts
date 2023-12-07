@@ -26,6 +26,9 @@ export class FuelPriceMobileComponent implements OnInit, OnDestroy{
     this.fuelPricesList = this.fuelPriceService.getFuelPrices()
   }
 
+  /**
+   * Gets the latest fuel prices from the fuelPriceService.
+   */
   public onGetFuelPrices(){
     this.isLoading = true;
     this.fuelPriceSubscription = this.fuelPriceService
@@ -45,6 +48,11 @@ export class FuelPriceMobileComponent implements OnInit, OnDestroy{
     this.closeFuelPrices.emit()
   }
 
+  /**
+   * Returns the URL of an image that corresponds to the given city.
+   * @param city name of the city for which to retrieve an image URL.
+   * @returns A string representing the URL of the image corresponding to the given city.
+   */
   getCitybgImage(city: string): string{
     switch (city){
       case 'Mumbai':
@@ -62,6 +70,7 @@ export class FuelPriceMobileComponent implements OnInit, OnDestroy{
     }
   }
 
+  // Unsubscribes from the fuel price data subscription, if it exists.
   ngOnDestroy(): void {
     if(this.fuelPriceSubscription) this.fuelPriceSubscription.unsubscribe();
   }

@@ -9,9 +9,8 @@ import {
   SignUpResponseData,
 } from '../model/auth-response-data.model';
 import { LocalStorageService } from './localStorage.service';
-import { UserMongoAuth } from '../model/user-mongo-auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { getAuth } from "firebase/auth";
+// import { getAuth } from "firebase/auth";
 
 @Injectable()
 export class AuthService {
@@ -27,7 +26,6 @@ export class AuthService {
     public afAuth: AngularFireAuth // Inject Firebase auth service
   ) {
     // check if there is saved token
-    console.log("jwt auth service",this.localStorageService.getItem('userJwt'))
     if(this.localStorageService.getItem('userJwt')){
       this.isAuthenticatedSubject.next(true);
     }
@@ -130,8 +128,10 @@ export class AuthService {
   }
 
   public logIn(email: string, password: string) {
-    return from(this.afAuth.signInWithEmailAndPassword(email, password)).pipe(
+    return from(this.afAuth.signInWithEmailAndPassword(email, password))
+    .pipe(
       switchMap((credentials) => {
+        console.log("Success from firebase!")
         return this.http.post<SignInResponseData>(
           'http://localhost:8080/authenticate',
           {
@@ -146,7 +146,7 @@ export class AuthService {
         );
       }),
       tap((resData: SignInResponseData) => {
-        this.isAuthenticatedSubject.next(true);
+        // this.isAuthenticatedSubject.next(true);
         this.storeUserJwt(resData.jwtToken);
         this.storeUserInfo(
           resData.userAuth.username,
@@ -163,6 +163,7 @@ export class AuthService {
     this.localStorageService.removeItem('userId');
     this.localStorageService.removeItem('userRole');
     this.localStorageService.removeItem('userJwt');
+    this.localStorageService.removeItem('userCity');
     this.isAuthenticatedSubject.next(false);
   }
 
@@ -184,39 +185,39 @@ export class AuthService {
     )
   }
 
-  public loginWithMobilew(phone: string, appVerifier){
-    return from(
-      this.afAuth.signInWithPhoneNumber(phone, appVerifier)).pipe(
-        switchMap(res => {
-          return this.http.post<SignInResponseData>(
-            'http://localhost:8080/authenticate', {
-              userName: 'johndoe@example.com',
-              userPassword: 'johndoe@example.com'
-            },{
-              headers: {
-                'No-Auth': 'True'
-              }
-            }
-          )
-        }),
-        tap((resData: SignInResponseData) => {
-          this.isAuthenticatedSubject.next(true);
-          this.storeUserJwt(resData.jwtToken);
-          this.storeUserInfo(
-            resData.userAuth.username,
-            resData.userAuth.userId,
-            resData.userAuth.role[0].roleName
-          );
-        }),
-        catchError(err => this.handleFirebaseError(err.code))
-      )
-  }
+  // public loginWithMobilew(phone: string, appVerifier){
+  //   return from(
+  //     this.afAuth.signInWithPhoneNumber(phone, appVerifier)).pipe(
+  //       switchMap(res => {
+  //         return this.http.post<SignInResponseData>(
+  //           'http://localhost:8080/authenticate', {
+  //             userName: 'janesmith@example.com',
+  //             userPassword: 'janesmith@example.com'
+  //           },{
+  //             headers: {
+  //               'No-Auth': 'True'
+  //             }
+  //           }
+  //         )
+  //       }),
+  //       tap((resData: SignInResponseData) => {
+  //         // this.isAuthenticatedSubject.next(true);
+  //         this.storeUserJwt(resData.jwtToken);
+  //         this.storeUserInfo(
+  //           resData.userAuth.username,
+  //           resData.userAuth.userId,
+  //           resData.userAuth.role[0].roleName
+  //         );
+  //       }),
+  //       catchError(err => this.handleFirebaseError(err.code))
+  //     )
+  // }
 
   public loginWithMobile(){
     return this.http.post<SignInResponseData>(
       'http://localhost:8080/authenticate', {
-        userName: 'johndoe@example.com',
-        userPassword: 'johndoe@example.com'
+        userName: 'trialuser@gmail.com',
+        userPassword: 'trialuser@gmail.com'
       }, {
         headers: {
           'No-Auth': 'True'
@@ -224,7 +225,7 @@ export class AuthService {
       }
     ).pipe(
       tap((resData: SignInResponseData) => {
-        this.isAuthenticatedSubject.next(true);
+        // this.isAuthenticatedSubject.next(true);
         this.storeUserJwt(resData.jwtToken);
         this.storeUserInfo(
           resData.userAuth.username,

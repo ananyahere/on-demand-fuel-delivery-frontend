@@ -2,7 +2,9 @@ export interface Address {
     addressId: string | null;
     type: string;
     receiver: string;
+    phone: string;
     location: string;
+    city: string;
 }
 
 export interface Vehicle {

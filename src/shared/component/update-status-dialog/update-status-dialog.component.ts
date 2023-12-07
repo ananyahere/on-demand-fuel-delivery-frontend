@@ -16,14 +16,18 @@ export class UpdateStatusDialogComponent {
     private orderService: OrderService,
     private snackbar: MatSnackBar
   ){}
+
   updateStatusForm: FormGroup = null;
+
   ngOnInit(): void {
     this.updateStatusForm = new FormGroup({
       'status': new FormControl(null, [Validators.required]),
     })
   }
+
   onUpdateStatus(){
     const status = this.updateStatusForm.value["status"]
+    // make API call o update status
     this.orderService.updateOrderStatus(this.data.orderId, status)
     .subscribe(
     res => {
@@ -41,4 +45,5 @@ export class UpdateStatusDialogComponent {
       this.dialogRef.close()
     })
   }
+
 }

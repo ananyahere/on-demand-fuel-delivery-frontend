@@ -13,6 +13,8 @@ import { LinkDialogComponent } from './component/link-dialog/link-dialog.compone
 import { PaymentSuccessComponent } from './component/payment-success/payment-success.component';
 import { UpdateStatusDialogComponent } from './component/update-status-dialog/update-status-dialog.component';
 import { RouterModule } from '@angular/router';
+import { EditAddressDialogComponent } from './component/edit-address-dialog/edit-address-dialog.component';
+import { OrderDetailsEmailWriteupComponent } from './component/order-details-email-writeup/order-details-email-writeup.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { RouterModule } from '@angular/router';
     LinkDialogComponent,
     PaymentSuccessComponent,
     UpdateStatusDialogComponent,
+    EditAddressDialogComponent,
+    OrderDetailsEmailWriteupComponent,
   ],
   imports: [
     CommonModule,

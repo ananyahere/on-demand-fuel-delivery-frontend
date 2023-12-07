@@ -19,6 +19,7 @@ export class OrderService {
     totalAmount: null,
     orderTime: null,
     scheduledTime: null,
+    deliveryTime: null,
     orderItems: null,
     orderItemsWithDetails: null,
     immediate: null,
@@ -32,6 +33,7 @@ export class OrderService {
     totalAmount: null,
     orderTime: null,
     scheduledTime: null,
+    deliveryTime: null,
     orderItems: null,
     orderItemsWithDetails: null,
     immediate: null,
@@ -175,6 +177,11 @@ export class OrderService {
   */
   getDeliveryOTP(orderId: string) {
     return this.http.get<any>(`${this.BASE_URL_ORDER}/${orderId}/otp`)
+  }
+
+  getInsights(): Observable<any> {
+    const url = `${this.BASE_URL_ORDER}/insights`;
+    return this.http.get<any>(url)
   }
 
   verifyDeliveryOTP() {}

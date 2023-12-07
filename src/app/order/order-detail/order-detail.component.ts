@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Order } from 'src/shared/model/order.model';
 import { OrderService } from 'src/shared/service/order.service';
 import { formatDate } from 'src/shared/utils/helper'
 import { PaymentService } from 'src/shared/service/payment.service';
 import { LinkDialogComponent } from 'src/shared/component/link-dialog/link-dialog.component';
-import { concat } from 'rxjs';
+
+declare const Razorpay: any;
 
 @Component({
   selector: 'app-order-detail',
@@ -28,11 +29,13 @@ export class OrderDetailComponent implements OnInit {
       type: 'Home',
       receiver: 'John Doe',
       location: '123 Main St, Anytown, CA 12345',
+      phone: '987654321'
     },
     orderStatus: 'Pending',
     totalAmount: 50.99,
     orderTime: '2022-10-01T04:30:00.000+00:00',
     scheduledTime: null,
+    deliveryTime: null,
     orderItems: null,
     orderItemsWithDetails: [
       {
@@ -41,16 +44,11 @@ export class OrderDetailComponent implements OnInit {
           fuelType: 'Petrol',
           fuelStock: 350,
           fuelStockUnit: 'Litres',
-          fuelSuppliers: [
-            {
-              supplierName: 'Supplier A',
-              supplierContactNo: '9876543210',
-            },
-            {
-              supplierName: 'Supplier B',
-              supplierContactNo: '1234567890',
-            },
-          ],
+          fuelSupplier:  {
+            name: 'Supplier A',
+            contact: '9876543210',
+            email: 'supplierA@gmail.com'
+          },
           basePriceHyd: 85,
           basePriceBlr: 86,
           basePriceBhu: 87,
@@ -65,6 +63,7 @@ export class OrderDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private orderService: OrderService,
     private snackbar: MatSnackBar,
     private paymentService: PaymentService,
@@ -104,13 +103,15 @@ export class OrderDetailComponent implements OnInit {
                 "addressId": "A001",
                 "type": "Home",
                 "receiver": "John Doe",
-                "location": "123 Main St, Anytown, CA 12345"
+                "location": "123 Main St, Anytown, CA 12345",
+                "phone": "9876543210"
             },
             "orderStatus": "Pending",
             "totalAmount": 50.99,
             "orderTime": "2022-10-01T04:30:00.000+00:00",
             "scheduledTime": null,
             "orderItems": null,
+            "deliveryTime": null,
             "orderItemsWithDetails": [
                 {
                     "fuelItemId": "FI001",
@@ -122,16 +123,11 @@ export class OrderDetailComponent implements OnInit {
                         "fuelType": "Petrol",
                         "fuelStock": 350.0,
                         "fuelStockUnit": "Litres",
-                        "fuelSuppliers": [
-                            {
-                                "supplierName": "Supplier A",
-                                "supplierContactNo": "9876543210"
-                            },
-                            {
-                                "supplierName": "Supplier B",
-                                "supplierContactNo": "1234567890"
-                            }
-                        ],
+                        "fuelSupplier":  {
+                          "name": 'Supplier A',
+                          "contact": '9876543210',
+                          "email": 'supplierA@gmail.com'
+                        },
                         "basePriceHyd": 85.0,
                         "basePriceBlr": 86.0,
                         "basePriceBhu": 87.0
@@ -178,7 +174,8 @@ export class OrderDetailComponent implements OnInit {
 
   onPaymentUpdate(){
     if(this.orderStatus >= 2) this.generateInvoice()
-    else this.generatePaymentLink()
+    // else this.generatePaymentLink()
+    else this.generatePayment()
   }
 
   private generatePaymentLink(){
@@ -251,4 +248,70 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
+  getFuelIcon(fuelType: string): string{
+    if(fuelType.toLowerCase() === "petrol"){
+      return "/assets/images/petrol.png"
+    } else if(fuelType.toLowerCase() === "cng"){
+      return "/assets/images/cng.png"
+    } else if(fuelType.toLowerCase() === "diesel"){
+      return "/assets/images/diesel.png"
+    } 
+    return "/assets/images/petrol.png"
+  }
+
+  private generatePayment() {
+    const razorpayOptions = {
+      description: 'Sample Razorpay demo',
+      currency: 'INR',
+      amount: Math.floor(this.order.totalAmount) * 100,
+      name: 'Fuel Checkout',
+      key: 'rzp_test_YANFvEeCNTFaQ2',
+      image: '',
+      order_id: null,
+      prefill: {
+        name: 'Ananya Sharma',
+        email: 'ananyasubodh8@gmail.com',
+        phone: '6378443464'
+      },
+      theme: {
+        color: '#f05454'
+      },
+      handler: () => {
+        this.postPayment()
+      },
+      modal: {
+        ondismiss: () => {
+          console.log('dismissed')
+        }
+  
+      }
+    }
+    Razorpay.open(razorpayOptions);
+  }
+
+  private postPayment(){
+    console.log("postPayment")
+    this.paymentService.createPaymentLink(this.orderId).subscribe(
+      response => {
+      // open dialog box
+      // this.linkDialog.open(LinkDialogComponent, {
+      //   data: {
+      //     type: 'paymentLink',
+      //     info: response
+      //   }
+      // })
+      this.orderStatus = 2
+      this.router.navigate(['/orders', this.orderId])
+      // get payment status
+
+    }, 
+    // error => {
+    //   this.snackbar.open("An error occurred while generating payment link. Please try again later.", "Dismiss", {
+    //     duration: 3000, // Snackbar duration in milliseconds
+    //     horizontalPosition: 'center', // Position of the snackbar on screen
+    //     verticalPosition: 'bottom' // Position of the snackbar on screen
+    //   })
+    // }
+    )
+  }
 }

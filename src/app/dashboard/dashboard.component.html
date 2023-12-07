@@ -1,53 +1,251 @@
-<div class="flex m-auto">
-  <div class="flex mx-auto container">
+<!-- <div class="flex w-full mx-auto justify-between container"> -->
+<!-- <div class="p-10 overflow-y-auto w-full h-[calc(80vh)]"> -->
+<div class="p-4 w-full">
+  <div class="w-full flex justify-between items-center">
+    <div class="grow">
+      <h3 class="text-2xl font-semibold leading-7 text-gray-900">
+        Fuel Suppliers.
+      </h3>
+      <span
+        class="bg-[color:var(--darker-secondary-color)] text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded mb-2"
+        >In {{ this.userCity }}</span
+      >
+    </div>
+    <!-- FILTERS -->
     <div
-      class="flex m-auto gap-4 lg:gap-8 overflow-y-hidden w-full h-[calc(88vh)]"
+      *ngIf="!isFuelListLoading"
+      class="flex flex-col md:flex-row justify-between w-2/6"
     >
-      <!-- RENDER REGULAR FUEL-PRICE-SCREEN FOR MEDIUM & ABOVE SCREEN WIDTHS -->
-      <div
-        class="hidden md:flex flex-col p-4 sticky top-0 w-1/6 md:w-1/4 hover:overflow-auto"
-      >
-        <app-fuel-price></app-fuel-price>
-      </div>
-      <!-- RENDER FUEL-PRICE POPUP SCREEN FOR SMALL SCREENS -->
-      <div
-        *ngIf="isFuelPricePopup"
-        class="md:hidden fixed inset-0 z-10 bg-black bg-opacity-50 flex items-center justify-center"
-      >
-        <div class="bg-white rounded-lg p-4 w-5/6">
-          <app-fuel-price-mobile
-            (closeFuelPrices)="toggleFuelPrices()"
-          ></app-fuel-price-mobile>
-        </div>
-      </div>
-      <!-- RENDER THE MAIN CONTENT OF DASHBOARD -->
-      <div class="flex w-full md:w-[80%] mx-auto justify-between container">
-        <div class="p-10 overflow-y-auto w-full h-[calc(80vh)]">
-          <h2 class="text-lg font-medium mb-4">Fuels</h2>
-          <div *ngIf="isFuelListLoading" class="flex justify-center h-[100%] items-center">
-            <app-loader></app-loader>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <!-- FUEL CARD -->
-            <p *ngIf="fuelList.length === 0">No Fuels Avaiable.</p>
-            <app-fuel-item
-              *ngFor="let fuelEle of fuelList"
-              (click)="openFuelDetailDialog(fuelEle)"
-              [fuel]="fuelEle"
-            ></app-fuel-item>
-          </div>
-        </div>
-        <!-- BOTTOM BUTTON TO OPEN THE FUEL-PRICE POPUP -->
-        <div class="md:hidden fixed bottom-3 right-3">
-          <button
-            class="md:hidden flex items-center justify-center w-[4rem] h-[4rem] text-white rounded-full bg-[color:var(--darker-secondary-color)] hover:bg-[color:var(--secondary-color)] hover:scale-105 shadow-lg cursor-pointer transition-all ease-in-out focus:outline-none"
-            title="Fuel Prices"
-            (click)="toggleFuelPrices()"
+      <!-- TYPE FILTER -->
+      <div>
+        <button
+          (click)="toggleTypeFilter()"
+          class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+        >
+          Type
+          <svg
+            class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
           >
-            <fa-icon [icon]="faBars" class="w-6 h-6"></fa-icon>
-          </button>
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
+        <div
+          *ngIf="showTypeFilter"
+          class="absolute right-0 md:right-72 z-10 mt-2 w-30 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="menu-button"
+          tabindex="-1"
+        >
+          <div class="space-y-0.5 p-3 rounded-md bg-white">
+            <form [formGroup]="fuelTypeFilterForm">
+              <div
+                formArrayName="fuelTypes"
+                class="flex items-center"
+                *ngFor="
+                  let fuelType of fuelTypeFilterForm.controls.fuelTypes
+                    .controls;
+                  let i = index
+                "
+              >
+                <input
+                  [formControlName]="i"
+                  type="checkbox"
+                  class="h-3 w-3 rounded border-gray-300 text-indigo-600"
+                />
+                <label class="ml-3 min-w-0 flex-1 text-gray-500 text-sm">
+                {{
+                  fuelTypeList[i]
+                }}
+                </label>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- SUPPLIER FILTER -->
+      <div>
+        <button
+          (click)="toggleSupplierFilter()"
+          class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+        >
+          Supplier
+          <svg
+            class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
+        <div
+          *ngIf="showSupplierFilter"
+          class="absolute right-0 md:right-44 z-10 mt-2 w-30 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="menu-button"
+          tabindex="-1"
+        >
+          <div class="space-y-1 p-3 rounded-md bg-white">
+            <form [formGroup]="fuelSupplierFilterForm">
+              <div
+                formArrayName="fuelSuppliers"
+                class="flex items-center"
+                *ngFor="
+                  let fuelSupplier of fuelSupplierFilterForm.controls.fuelSuppliers
+                    .controls;
+                  let i = index
+                "
+              >
+                <input
+                  [formControlName]="i"
+                  type="checkbox"
+                  class="h-3 w-3 rounded border-gray-300 text-indigo-600"
+                />
+                <label class="ml-2 min-w-0 flex-1 text-gray-500 text-sm">
+                {{
+                  fuelSupplierList[i]
+                }}
+                </label>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- AMOUNT FILTER -->
+      <div>
+        <button
+          class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+          (click)="toggleAmountFilter()"
+        >
+          Amount
+          <svg
+            class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
+        <div
+          *ngIf="showAmountFilter"
+          class="absolute right-0 md:right-20 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="menu-button"
+          tabindex="-1"
+        >
+          <div class="py-1" role="none">
+            <a
+              class="text-gray-500 block px-4 py-2 text-sm"
+              role="menuitem"
+              tabindex="-1"
+              id="menu-item-3"
+              (click)="sortByAmount('asc')"
+              >Low to High</a
+            >
+            <a
+              class="text-gray-500 block px-4 py-2 text-sm"
+              role="menuitem"
+              tabindex="-1"
+              id="menu-item-4"
+              (click)="sortByAmount('desc')"
+              >High to Low</a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- PRICE FILTER -->
+      <div>
+        <button
+          type="button"
+          class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+          (click)="togglePriceFilter()"
+        >
+          Price
+          <svg
+            class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
+        <div
+          *ngIf="showPriceFilter"
+          class="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="menu-button"
+          tabindex="-1"
+        >
+          <div class="py-1" role="none">
+            <a
+              class="text-gray-500 block px-4 py-2 text-sm"
+              role="menuitem"
+              tabindex="-1"
+              id="menu-item-3"
+              (click)="sortByPrice('asc')"
+              >Low to High</a
+            >
+            <a
+              class="text-gray-500 block px-4 py-2 text-sm"
+              role="menuitem"
+              tabindex="-1"
+              id="menu-item-4"
+              (click)="sortByPrice('desc')"
+              >High to Low</a
+            >
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <div
+    *ngIf="isFuelListLoading"
+    class="flex justify-center h-[100%] items-center"
+  >
+    <app-loader></app-loader>
+  </div>
+
+  <p *ngIf="isUserCityOther">
+    This location is not supported. Please change your location.
+  </p>
+  <div
+    *ngIf="!isUserCityOther"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+  >
+    <!-- FUEL CARD -->
+    <p *ngIf="!isFuelListLoading && fuelList.length === 0">
+      No Fuels Available.
+    </p>
+    <app-fuel-item
+      *ngFor="let fuelEle of fuelList"
+      (click)="openFuelDetailDialog(fuelEle)"
+      [fuel]="fuelEle"
+    ></app-fuel-item>
+  </div>
 </div>
+<!-- </div> -->

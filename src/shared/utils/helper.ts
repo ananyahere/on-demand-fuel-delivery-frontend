@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 /**
  * Formats the given date string to the format "MMM dd, yyyy".
  * 
@@ -31,12 +29,16 @@ export function formatDate(dateString: string): string {
 }
 
 /**
- * Generates a UUID (Universally Unique Identifier) using the v4 algorithm.
+ * Generates a UUID (Universally Unique Identifier).
  * 
  * @returns {string} - The generated UUID in string format.
  */
 export function generateUUID(): string {
-  return uuidv4();
+  const firstPart = (Math.random() * 46656) | 0;
+  const secondPart = (Math.random() * 46656) | 0;
+  const firstPartStr = ("000" + firstPart.toString(36)).slice(-3);
+  const secondPartStr = ("000" + secondPart.toString(36)).slice(-3);
+  return firstPartStr + secondPartStr;
 }
 
 /**
@@ -90,4 +92,39 @@ export function generateDateTimeStamp(dateInput: string, timeInput: string): str
 
   const timestamp = date.getTime();
   return new Date(timestamp).toISOString();
+}
+
+export function generateShortUUID(): string {
+  const firstPart = (Math.random() * 46656) | 0;
+  const firstPartStr = ("000" + firstPart.toString(36)).slice(-3);
+  return firstPartStr;
+}
+
+export function convertFuelUnit(quantity: number, fuelType: string, inputUnit: string): number {
+  console.log("fuelType", fuelType)
+  let conversionFactor: number = 1; // default is no conversion needed
+
+  if (inputUnit.toLowerCase() === 'gallons') {
+    conversionFactor = 3.78541; // 1 gallon = 3.78541 liters
+  } else if (inputUnit.toLowerCase() === 'kilograms') {
+    // conversion factor depends on fuel type
+    switch (fuelType.toLowerCase()) {
+      case 'cng':
+        conversionFactor = 0.26; // 1 kg of CNG = 0.26 liters
+        break;
+      case 'diesel':
+        conversionFactor = 0.83502; // 1 kg of diesel = 0.83502 liters
+        break;
+      case 'petrol':
+        console.log("here petrol")
+        conversionFactor = 0.7551; // 1 kg of petrol = 0.7551 liters
+        break;
+      default:
+        throw new Error('Invalid fuel type');
+    }
+  } else {
+    throw new Error('Invalid input unit type');
+  }
+
+  return Math.ceil(quantity * conversionFactor);
 }

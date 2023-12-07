@@ -2,7 +2,7 @@
   class="w-full lg:max-w-md border lg:mx-6 border-gray-200 rounded-lg shadow"
 >
   <div class="flow-root bg-white px-2">
-    <div *ngIf="currentOrder.orderItemsWithDetails === null ||  currentOrder.orderItemsWithDetails.length === 0" class="my-6 text-center">
+    <div *ngIf="currentOrder.orderItemsWithDetails === null ||  currentOrder.orderItemsWithDetails.length === 0" class="my-6 text-center px-3">
       <p>Order is Empty.</p>
     </div>
     <ul role="list" class="my-6 divide-y divide-gray-200 mx-3">
@@ -11,7 +11,7 @@
           class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
         >
           <img
-            src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg"
+          [src]="getFuelIcon(item.fuelDetail.fuelType)"  
             class="h-full w-full object-cover object-center"
           />
         </div>
@@ -71,6 +71,7 @@
         <button
           type="button"
           class="font-medium text-[color:var(--darker-secondary-color)] hover:text-[color:var(--darker-secondary-hover-color)]"
+          (click)="toDashboard()"
         >
           Continue Shopping
           <span aria-hidden="true"> &rarr;</span>

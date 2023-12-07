@@ -23,7 +23,6 @@ import { FuelItemComponent } from './dashboard/fuel/fuel-item/fuel-item.componen
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/material/material.module';
-import { FuelDetailComponent } from './dashboard/fuel/fuel-detail/fuel-detail.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { OrderComponent } from './order/order.component';
@@ -34,11 +33,19 @@ import { OrderSummaryComponent } from './order/order-summary/order-summary.compo
 import { AuthInterceptor } from 'src/shared/auth/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
+
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth'; // imports firebase/auth, only needed for auth features
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'; // imports firebase/firestore, only needed for database features
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { InsightsComponent } from './insights/insights.component';
+import { SidebarComponent } from './sidebar-layout/sidebar/sidebar.component';
+import { SidebarMobileComponent } from './sidebar-layout/sidebar-mobile/sidebar-mobile.component';
+import { SidebarContainerComponent } from './sidebar-layout/sidebar-container/sidebar-container.component';
+import { FuelPricesComponent } from './fuel-prices/fuel-prices.component';
+import { NgChartsModule, NgChartsConfiguration } from 'ng2-charts';
+import { AddFuelTankComponent } from './fuel-tank/add-fuel-tank/add-fuel-tank.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCeDHrtOE3IryPqbQZsi6KYNMJK0p6D8yE",
@@ -66,7 +73,6 @@ firebase.initializeApp(firebaseConfig)
     FuelPriceComponent,
     FuelPriceMobileComponent,
     FuelItemComponent,
-    FuelDetailComponent,
     ProfileComponent,
     EditProfileComponent,
     OrderComponent,
@@ -74,6 +80,12 @@ firebase.initializeApp(firebaseConfig)
     CartComponent,
     SigninMobileComponent,
     OrderSummaryComponent,
+    InsightsComponent,
+    SidebarComponent,
+    SidebarMobileComponent,
+    SidebarContainerComponent,
+    FuelPricesComponent,
+    AddFuelTankComponent,
 
   ],
   imports: [
@@ -85,6 +97,7 @@ firebase.initializeApp(firebaseConfig)
     FontAwesomeModule,
     SharedModule,
     MaterialModule,
+    NgChartsModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
@@ -98,6 +111,10 @@ firebase.initializeApp(firebaseConfig)
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
+    },
+    { 
+      provide: NgChartsConfiguration, 
+      useValue: { generateColors: false }
     }
   ],
   bootstrap: [AppComponent],

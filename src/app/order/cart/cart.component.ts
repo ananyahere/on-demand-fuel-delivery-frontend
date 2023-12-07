@@ -26,16 +26,11 @@ export class CartComponent implements OnInit {
           fuelType: 'Diesel',
           fuelStock: 450.0,
           fuelStockUnit: 'Litres',
-          fuelSuppliers: [
-            {
-              supplierName: 'Supplier C',
-              supplierContactNo: '9999999999',
-            },
-            {
-              supplierName: 'Supplier D',
-              supplierContactNo: '8888888888',
-            },
-          ],
+          fuelSupplier:  {
+            name: 'Supplier A',
+            contact: '9876543210',
+            email: 'supplierA@gmail.com'
+          },
           basePriceHyd: 75.5,
           basePriceBlr: 76.5,
           basePriceBhu: 77.5,
@@ -51,16 +46,11 @@ export class CartComponent implements OnInit {
           fuelType: 'CNG',
           fuelStock: 200.0,
           fuelStockUnit: 'Kgs',
-          fuelSuppliers: [
-            {
-              supplierName: 'Supplier E',
-              supplierContactNo: '7777777777',
-            },
-            {
-              supplierName: 'Supplier F',
-              supplierContactNo: '6666666666',
-            },
-          ],
+          fuelSupplier:  {
+            name: 'Supplier A',
+            contact: '9876543210',
+            email: 'supplierA@gmail.com'
+          },
           basePriceHyd: 60.0,
           basePriceBlr: 61.0,
           basePriceBhu: 62.0,
@@ -98,7 +88,6 @@ export class CartComponent implements OnInit {
     // Fetch cart for the logged-in user
     this.cartService.getCartForUser(userId).subscribe(
       (cart: Cart) => {
-        console.log("cart: ", cart)
         this.cart = cart;
       },
       (error) => {
@@ -150,6 +139,17 @@ export class CartComponent implements OnInit {
     );
     // remove fuel-item from cart
     this.onRemoveFromCart(fuelItemId);
+  }
+
+  getFuelIcon(fuelType: string): string{
+    if(fuelType.toLowerCase() === "petrol"){
+      return "/assets/images/petrol.png"
+    } else if(fuelType.toLowerCase() === "cng"){
+      return "/assets/images/cng.png"
+    } else if(fuelType.toLowerCase() === "diesel"){
+      return "/assets/images/diesel.png"
+    } 
+    return "/assets/images/petrol.png"
   }
 }
 

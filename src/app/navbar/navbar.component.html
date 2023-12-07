@@ -9,29 +9,22 @@
         <!-- ADD IMAGE HERE -->
         <h1 class="m-2 text-black font-bold text-4xl">
           <span class="text-[color:var(--darker-secondary-color)]" (click)="toDashboard()">
-            TankOnTap
+            ⛽TankOnTap 
           </span>
         </h1>
       </div>
       <nav class="text-sm">
         <ul class="flex items-center">
           <li class="mr-4 cursor-pointer">
-            <a
-              routerLink="/cart"
-            >Cart</a>
+            {{userLoc ? userLoc : '...'}}
           </li>
-          <li class="mr-4 cursor-pointer">
-            <a
-              routerLink="/orders"
-            >Past Orders</a>
-          </li>
-          <!-- SETTING DROPDOWN -->
+          <!-- ADDRESS DROPDOWN -->
           <li class="mr-4 cursor-pointer relative">
             <button
               (click)="toggleDropdown()"
               class="flex items-center justify-center bg-[color:var(--darker-secondary-color)] hover:bg-[color:var(--darker-secondary-hover-color)] text-white text-sm font-medium rounded-md w-28 h-10 focus:outline-none"
             >
-              <span class="mr-2">Setting</span>
+              <span class="mr-2">{{userCity}}</span>
               <fa-icon
                 class="h-4 w-4"
                 [icon]="showDropdown ? faAngleUp : faAngleDown"
@@ -41,25 +34,17 @@
               *ngIf="showDropdown"
               class="mt-1 absolute min-w-[231px] right-0 bg-white rounded-md overflow-hidden shadow-lg z-10"
             >
-              <div
-                class="py-4 group hover:bg-[color:var(--darker-secondary-color)] transition-all ease-in-out"
-              >
-                <button
-                  class="text-left w-full px-4 text-gray-800 group-hover:text-white transition-all ease-in-out"
-                  (click)="toProfile()"
-                >
-                  Profile
-                </button>
-              </div>
-              <div
-                class="py-4 group hover:bg-[color:var(--darker-secondary-color)] transition-all ease-in-out"
-              >
-                <button
-                  class="text-left w-full px-4 text-gray-800 group-hover:text-white transition-all ease-in-out"
-                >
-                  Logout
-                </button>
-              </div>
+            <div
+              class="py-4 group hover:bg-[color:var(--darker-secondary-color)] transition-all ease-in-out"
+              *ngFor="let address of addresses"
+            >
+              <button
+              class="text-left w-full px-4 text-gray-800 group-hover:text-white transition-all ease-in-out"
+              (click)="setCurrentAddress(address)"
+            >
+              {{formatAddress(address)}}
+            </button>
+            </div>
             </div>
           </li>
         </ul>

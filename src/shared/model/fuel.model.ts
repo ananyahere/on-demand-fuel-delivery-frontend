@@ -3,7 +3,7 @@ export interface Fuel {
   fuelType: string;
   fuelStock: number;
   fuelStockUnit: string;
-  fuelSuppliers: FuelSupplier[] | null;
+  fuelSupplier: FuelSupplier;
   basePriceHyd: number;
   basePriceBlr: number;
   basePriceBhu: number;
@@ -29,13 +29,14 @@ export interface FuelDetail {
   fuelType: string;
   fuelStock: number;
   fuelStockUnit: string;
-  fuelSuppliers: FuelSupplier[];
+  fuelSupplier: FuelSupplier;
   basePriceHyd: number;
   basePriceBlr: number;
   basePriceBhu: number;
 }
 
 export interface FuelSupplier {
-  supplierName: string;
-  supplierContactNo: string;
+  name: string;
+  contact: string;
+  email: string;
 }

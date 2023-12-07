@@ -9,7 +9,7 @@ import { AuthService } from 'src/shared/service/auth.service';
 import { SignInResponseData } from 'src/shared/model/auth-response-data.model';
 import { LocalStorageService } from 'src/shared/service/localStorage.service';
 import { LocationService } from 'src/shared/service/location.service';
-import { generateUUID } from 'src/shared/utils/helper';
+import { generateShortUUID, generateUUID } from 'src/shared/utils/helper';
 import { Address } from 'src/shared/model/user.model';
 import { UserService } from 'src/shared/service/user.service';
 
@@ -61,8 +61,13 @@ export class SigninMobileComponent implements OnInit{
     this.winRef.recaptchaVerifier.render()
   }
 
-  public onSubmitCredits(){
-    console.log(this.signinPhoneForm.value)
+  /**
+  * @public
+  * @function onSubmitCredits
+  * @description Handles the form submission for user sign-in with mobile number and verifies the mobile number using Firebase Authentication.
+  * @returns {void} 
+  */
+  public onSubmitCredits(): void{
     if(!this.signinPhoneForm.valid){
       this.snackbar.open("Please check the form and make sure all required fields are filled out correctly.", "Dismiss", {
         duration: 3000, // Snackbar duration in milliseconds
@@ -119,6 +124,12 @@ export class SigninMobileComponent implements OnInit{
     }
   }
 
+  /**
+  * @public
+  * @function onVerifyCode
+  * @description Validates the verification code entered by the user and progresses to the next step if it is correct.
+  * @returns {void} 
+  */
   public onVerifyCode(){
     if(!this.verifyCodeForm.valid){
       this.snackbar.open("Please check the form and make sure all required fields are filled out correctly.", "Dismiss", {
@@ -166,56 +177,109 @@ export class SigninMobileComponent implements OnInit{
           let city = response.results[0].city
           let locLine1 = response.results[0].address_line1 
           let locLine2  = response.results[0].address_line2
+          // if no city, set Hyderabad
           if(!city) city = "Hyderabad"
           let location: string = ""
           const userId: string = this.localStorageService.getItem('userId')
-          this.userService.setUserLocation(userId, city)
-          .subscribe(
-          res => {
-            console.log(res)
-            // store user current address
-            const name: string = "Default-User"
-            const type: string  = "current"
-            if(!locLine1 || !locLine2) location = "789 Oak Lane, Metropolis"
-            else location = locLine1 + ", " + locLine2
-            this.localStorageService.setItem('userCity', city);
-            const address: Address = {
-              addressId: 'A'+ generateUUID(),
-              receiver: name, 
-              type: type, 
-              location: location
+          // store user current address
+          const name: string = 'U' + generateUUID();
+          const type: string = 'Current-'+ generateShortUUID();
+          if(!locLine1 || !locLine2) location = "789 Oak Lane, Metropolis"
+          else location = locLine1 + ", " + locLine2
+          this.localStorageService.setItem('userCity', city);
+          const address: Address = {
+            // generate random UUID
+            addressId: 'A'+ generateUUID(),
+            receiver: name, 
+            type: type, 
+            location: location,
+            phone: '6378443464',
+            city: city
+          }
+          this.userService.saveAddress(userId, address).subscribe(
+            res => {
+              // set authentication state to true
+              this.authService.isAuthenticatedSubject.next(true)
+              this.snackbar.open(
+                'Address addedd successfully',
+                'Dismiss',
+                {
+                  duration: 3000, // Snackbar duration in milliseconds
+                  horizontalPosition: 'center', // Position of the snackbar on screen
+                  verticalPosition: 'bottom', // Position of the snackbar on screen
+                }
+              );
+              // redirect user to dashboard
+              this.router.navigate(['/dashboard'])
+            }, err => {
+              this.snackbar.open(
+                'An error occurred while saving address. Please try again later.',
+                'Dismiss',
+                {
+                  duration: 3000, // Snackbar duration in milliseconds
+                  horizontalPosition: 'center', // Position of the snackbar on screen
+                  verticalPosition: 'bottom', // Position of the snackbar on screen
+                }
+              );
             }
-            this.userService.saveAddress(userId, address).subscribe(
-              res => {
-                this.snackbar.open(
-                  'Address addedd successfully',
-                  'Dismiss',
-                  {
-                    duration: 3000, // Snackbar duration in milliseconds
-                    horizontalPosition: 'center', // Position of the snackbar on screen
-                    verticalPosition: 'bottom', // Position of the snackbar on screen
-                  }
-                );
-              }, err => {
-                this.snackbar.open(
-                  'An error occurred while saving address. Please try again later.',
-                  'Dismiss',
-                  {
-                    duration: 3000, // Snackbar duration in milliseconds
-                    horizontalPosition: 'center', // Position of the snackbar on screen
-                    verticalPosition: 'bottom', // Position of the snackbar on screen
-                  }
-                );
-              }
-            )
-          },
-          err => {
-            this.snackbar.open(`An error occurred while saving city Please try again later.`, "Dismiss", {
-              duration: 3000, // Snackbar duration in milliseconds
-              horizontalPosition: 'center', // Position of the snackbar on screen
-              verticalPosition: 'bottom' // Position of the snackbar on screen
-            })    
-          })
+          )
+
+
+          // this.userService.setUserLocation(userId, null)
+          // .subscribe(
+          // res => {
+          //   // store user current address
+          //   const name: string = 'U' + generateUUID();
+          //   const type: string = 'Current-'+ generateShortUUID();
+          //   if(!locLine1 || !locLine2) location = "789 Oak Lane, Metropolis"
+          //   else location = locLine1 + ", " + locLine2
+          //   this.localStorageService.setItem('userCity', city);
+          //   const address: Address = {
+          //     // generate random UUID
+          //     addressId: 'A'+ generateUUID(),
+          //     receiver: name, 
+          //     type: type, 
+          //     location: location,
+          //     phone: '6378443464',
+          //     city: city
+          //   }
+          //   this.userService.saveAddress(userId, address).subscribe(
+          //     res => {
+          //       // set authentication state to true
+          //       this.authService.isAuthenticatedSubject.next(true)
+          //       this.snackbar.open(
+          //         'Address addedd successfully',
+          //         'Dismiss',
+          //         {
+          //           duration: 3000, // Snackbar duration in milliseconds
+          //           horizontalPosition: 'center', // Position of the snackbar on screen
+          //           verticalPosition: 'bottom', // Position of the snackbar on screen
+          //         }
+          //       );
+          //       // redirect user to dashboard
+          //       this.router.navigate(['/dashboard'])
+          //     }, err => {
+          //       this.snackbar.open(
+          //         'An error occurred while saving address. Please try again later.',
+          //         'Dismiss',
+          //         {
+          //           duration: 3000, // Snackbar duration in milliseconds
+          //           horizontalPosition: 'center', // Position of the snackbar on screen
+          //           verticalPosition: 'bottom', // Position of the snackbar on screen
+          //         }
+          //       );
+          //     }
+          //   )
+          // },
+          // err => {
+          //   this.snackbar.open(`An error occurred while saving city Please try again later.`, "Dismiss", {
+          //     duration: 3000, // Snackbar duration in milliseconds
+          //     horizontalPosition: 'center', // Position of the snackbar on screen
+          //     verticalPosition: 'bottom' // Position of the snackbar on screen
+          //   })    
+          // })
+
+
         },
         err => {
           this.snackbar.open(`An error occurred while getting user city. Please try again later.`, "Dismiss", {

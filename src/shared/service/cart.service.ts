@@ -59,8 +59,4 @@ export class CartService {
     //   })
     // );
   }
-
-  private emitCartChange(): void {
-    this.cartChangeSubject.next([this.cart]);
-  }
 }

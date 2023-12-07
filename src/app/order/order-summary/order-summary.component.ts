@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PlaceOrderDialogComponent } from 'src/shared/component/place-order-dialog/place-order-dialog.component';
 import { Order } from 'src/shared/model/order.model';
 import { OrderService } from 'src/shared/service/order.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-summary',
@@ -17,13 +18,16 @@ export class OrderSummaryComponent implements OnInit {
       addressId: "A001",
       type: "Home",
       receiver: "John Doe",
-      location: "123 Main St, Anytown, CA 12345"
+      location: "123 Main St, Anytown, CA 12345",
+      phone: '9876543210',
+      city: 'Anytown'
     },
     deliveryOtp: "123456",
     orderStatus: "Pending",
     totalAmount: 50.99,
     orderTime: "2022-10-01T04:30:00.000+00:00",
     scheduledTime: null,
+    deliveryTime: null,
     orderItems: [],
     orderItemsWithDetails: [
       {
@@ -36,16 +40,11 @@ export class OrderSummaryComponent implements OnInit {
           fuelType: "Petrol",
           fuelStock: 350,
           fuelStockUnit: "Litres",
-          fuelSuppliers: [
-            {
-              supplierName: "Supplier A",
-              supplierContactNo: "9876543210"
-            },
-            {
-              supplierName: "Supplier B",
-              supplierContactNo: "1234567890"
-            }
-          ],
+          fuelSupplier:  {
+            name: 'Supplier A',
+            contact: '9876543210',
+            email: 'supplierA@gmail.com'
+          },
           basePriceHyd: 85,
           basePriceBlr: 86,
           basePriceBhu: 87
@@ -58,6 +57,7 @@ export class OrderSummaryComponent implements OnInit {
   subtotal: number = 0;
 
   constructor(
+    private router: Router,
     private orderService: OrderService,
     private placeOrderDialog: MatDialog,
   ) { }
@@ -74,7 +74,7 @@ export class OrderSummaryComponent implements OnInit {
   }
 
   public openPlaceOrderDialog(){
-    console.log(this.currentOrder)
+    console.log("current order in order summary",this.currentOrder)
     this.placeOrderDialog.open(PlaceOrderDialogComponent, {
       data: { 
         subtotal: this.subtotal,
@@ -91,7 +91,6 @@ export class OrderSummaryComponent implements OnInit {
       const fuelDetail = item.fuelDetail;
       const quantity = item.fuelQuantity;
       const basePrice = fuelDetail.basePriceHyd; // We are using basePriceHyd for all fuel types
-
       const itemPrice = quantity * basePrice;
       subTotal += itemPrice;
     }
@@ -99,4 +98,19 @@ export class OrderSummaryComponent implements OnInit {
     return subTotal.toFixed(2);
   }
   
+  toDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+
+  getFuelIcon(fuelType: string): string{
+    if(fuelType.toLowerCase() === "petrol"){
+      return "/assets/images/petrol.png"
+    } else if(fuelType.toLowerCase() === "cng"){
+      return "/assets/images/cng.png"
+    } else if(fuelType.toLowerCase() === "diesel"){
+      return "/assets/images/diesel.png"
+    } 
+    return "/assets/images/petrol.png"
+  }
+
 }

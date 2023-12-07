@@ -1,13 +1,24 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Address, User, Vehicle } from '../model/user.model';
 import { LocalStorageService } from './localStorage.service';
+import { generateUUID } from 'src/shared/utils/helper';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private BASE_URL_USER = 'http://localhost:8080/users';
-  userLoc: string = 'hyd';
+  private currentUserLoc: Address = {
+    addressId: 'A' + generateUUID(),
+    type: 'current',
+    receiver: 'default-user',
+    location: '789 Oak Lane, Metropolis',
+    phone: '9876543210',
+    city: "Metropolis"
+  };
+  // private currentUserCity: string = 'Hyderabad';
+  currentUserCitySubject = new BehaviorSubject<string>("Hyderabad");
+  currentUserCity$: Observable<string> = this.currentUserCitySubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -65,6 +76,13 @@ export class UserService {
       this.BASE_URL_USER + `/${userId}/addresses`,
       address
     );
+  }
+
+  public editAddress(userId: string, addressId: string, address): Observable<User> {
+    return this.http.put<User>(
+      this.BASE_URL_USER + `/${userId}/addresses/${addressId}`,
+      address
+    )
   }
 
   /**
@@ -145,36 +163,20 @@ export class UserService {
   }
 
   /**
-   * Gets the location of the user.
-   * @returns A string representing the location of the user.
-   */
-  public getUserLocation() {
-    return this.userLoc;
-  }
-
-  /**
-   * Gets an array of cities.
-   * @returns An array of cities.
-   */
-  public getCities() {
-    return ['Hyderabad', 'Bangalore', 'Bhubaneswar', 'Others'];
-  }
-
-  /**
    * Gets the rate of a city.
    * @param city - A string representing the city whose rate is to be retrieved.
    * @returns A number representing the rate of the city.
    */
-  public getCityRate(city) {
+  public getCityRate(city: string) {
     switch (city) {
       case 'Hyderabad':
-        return 20;
+        return 5;
       case 'Bangalore':
-        return 30;
+        return 8;
       case 'Bhubaneswar':
-        return 40;
+        return 7;
       default:
-        return 100;
+        return 20;
     }
   }
 
@@ -192,5 +194,47 @@ export class UserService {
    */
   public isUser(): boolean {
     return this.localStorageService.getItem('userRole') == 'user';
+  }
+
+  public setCurrentUserLoc(address: Address): void {
+    this.currentUserLoc = address;
+    console.log("currentUserLoc: ", this.currentUserLoc)
+    // update user loc in local storage
+    this.localStorageService.setItem('userLoc', address.location)
+  }
+
+  public getCurrentUserLoc(): Address {
+    return this.currentUserLoc;
+  }
+
+  public setCurrentUserCity(city: string): void {
+    // emit the updated city
+    this.currentUserCitySubject.next(city)
+    // update user city in local storage
+    this.localStorageService.setItem('userCity', city)
+
+  }
+
+  public getCurrentUserCityChange(): Observable<string> {
+    return this.currentUserCity$;
+  }
+
+  public getCurrentUserCity(): string {
+    const userCity: string = this.localStorageService.getItem('userCity');
+    return userCity;
+    
+  }
+
+  public getCityDeliveryRate(city: string) {
+    switch (city) {
+      case 'Hyderabad':
+        return 1;
+      case 'Bangalore':
+        return 3;
+      case 'Bhubaneswar':
+        return 5;
+      default:
+        return 7;
+    }
   }
 }

@@ -1,0 +1,109 @@
+<div class="p-4 container">
+  <div class="px-4 sm:px-0">
+    <h3 class="text-2xl font-semibold leading-7 text-gray-900">Fuel Prices.</h3>
+  </div>
+  <div class="flex justify-center items-center mt-5">
+    <form
+      class="flex flex-col md:flex-row justify-between w-full"
+      [formGroup]="filterCityForm"
+    >
+      <div class="flex flex-wrap md:mr-4">
+        <div class="flex items-center me-4">
+          <input
+            formControlName="selectedCity"
+            id="inline-4-radio"
+            type="radio"
+            value="All"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+          />
+          <label
+            for="inline-4-radio"
+            class="ms-2 text-sm font-medium text-gray-900"
+            >All</label
+          >
+        </div>
+        <div class="flex items-center me-4">
+          <input
+            formControlName="selectedCity"
+            id="inline-radio"
+            type="radio"
+            value="mumbai"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+          />
+          <label
+            for="inline-radio"
+            class="ms-2 text-sm font-medium text-gray-900"
+            >Mumbai</label
+          >
+        </div>
+        <div class="flex items-center me-4">
+          <input
+            formControlName="selectedCity"
+            id="inline-1-radio"
+            type="radio"
+            value="bangalore"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+          />
+          <label
+            for="inline-1-radio"
+            class="ms-2 text-sm font-medium text-gray-900"
+            >Bangalore</label
+          >
+        </div>
+        <div class="flex items-center me-4">
+          <input
+            formControlName="selectedCity"
+            id="inline-2-radio"
+            type="radio"
+            value="hyderabad"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+          />
+          <label
+            for="inline-2-radio"
+            class="ms-2 text-sm font-medium text-gray-900"
+            >Hyderabad</label
+          >
+        </div>
+        <div class="flex items-center me-4">
+          <input
+            formControlName="selectedCity"
+            id="inline-3-radio"
+            type="radio"
+            value="bhubaneswar"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+          />
+          <label
+            for="inline-3-radio"
+            class="ms-2 text-sm font-medium text-gray-900"
+            >Bhubaneswar</label
+          >
+        </div>
+      </div>
+      <div>
+        <button
+          class="bg-[color:var(--darker-secondary-color)] hover:bg-[color:var(--darker-secondary-hover-color)] text-white text-sm font-medium rounded w-28 h-10 focus:outline-none p-2"
+          (click)="onGetFuelPrices()"
+        >
+          Reload Prices
+        </button>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="isLoading" class="flex justify-center h-[100%] items-center">
+    <app-loader></app-loader>
+  </div>
+  <div
+    *ngIf="!isLoading"
+    class="transition-all mt-10 md:ml-36 bg-[color:var(--white-color)] rounded-lg shadow-md px-3 py-3 max-w-lg"
+  >
+    <canvas
+      baseChart
+      class="chart"
+      [data]="barChartData"
+      [options]="barChartOptions"
+      [type]="barChartType"
+      (chartHover)="chartHovered($event)"
+    >
+    </canvas>
+  </div>
+</div>

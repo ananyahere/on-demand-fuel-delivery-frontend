@@ -1,8 +1,8 @@
-<h4 class="p-2.5">{{'Update Order Status for ' + this.data.orderId}} </h4>
-<div class="p-2.5">
+<h4 class="p-4">Update Order Status for <span class="font-semibold">{{this.data.orderId}}</span>  </h4>
+<div class="p-4">
   <form [formGroup]="updateStatusForm">
     <select
-      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full"
+      class="bg-gray-50 border border-gray-300 text-gray-900 rounded blocked w-full"
       formControlName="status"
     >
       <option selected>Choose status</option>
@@ -13,7 +13,7 @@
     </select>
   </form>
 </div>
-<div class="p-2.5">
+<div class="p-4">
   <button
     (click)="onUpdateStatus()"
     class="flex gap-2 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"

@@ -3,7 +3,8 @@
 >
   <div class="relative">
     <img
-      src="https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg"
+      [src]="getFuelIcon(fuel.fuelType)" 
+      [ngClass]="fuel.fuelStock <= 0 ? 'grayscale' : ''"
     />
   </div>
   <div class="flex flex-row justify-between items-start mt-4">
@@ -20,18 +21,19 @@
       <p class="text-sm text-red-500 mt-2" *ngIf="fuel.fuelStock <= 0">
         <strong class="whitespace-nowrap"> Out Of Stock </strong>
       </p>
-      <span *ngFor="let supplier of fuel.fuelSuppliers">
+      <!-- <span *ngFor="let supplier of fuel.fuelSuppliers">
         <a
           class="text-sm text-[color:var(--darker-secondary-color)] hover:text-[color:var(--darker-secondary-hover-color)] hover:underline"
           *ngIf="userRole === 'admin' && fuel.fuelStock <= 0"
-          [href]="'mailto:' + supplier.supplierName + '@gmail.com'"
         >
           {{ "Contact " + supplier.supplierName }}
         </a>
-      </span>
-
+      </span> -->
       <p class="text-sm text-green-500 mt-2" *ngIf="fuel.fuelStock > 0">
         <strong class="whitespace-nowrap"> In Stock </strong>
+      </p>
+      <p class="text-sm">
+        ₹ {{ getFuelPriceForCity(fuel) }} / Liter
       </p>
     </div>
   </div>

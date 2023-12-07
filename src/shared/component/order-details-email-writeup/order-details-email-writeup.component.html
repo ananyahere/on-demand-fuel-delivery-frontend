@@ -1,0 +1,16 @@
+<main class="m-4">
+    <h2 class="text-gray-700 dark:text-gray-200">Hi OurDeliveryPartner,</h2>
+    <p class="leading-7 text-gray-600 whitespace-pre-wrap">
+        <!-- Alicia has invited you to join the team on <span class="font-semibold ">Meraki UI</span>. -->
+        {{this.data}}
+    </p>
+    <p class="text-gray-600">
+        Thanks, <br>
+        TankOnTap Admin
+    </p>
+    <button 
+        (click)="copyContent()"
+        class="flex gap-2 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]">
+        Copy
+    </button>
+</main>

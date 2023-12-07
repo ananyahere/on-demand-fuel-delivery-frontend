@@ -12,5 +12,6 @@ export interface Order {
   scheduledTime: string | null;
   orderItems: FuelItem[] | null;
   orderItemsWithDetails: FuelItemDetail[] | null;
-  immediate: boolean
+  immediate: boolean;
+  deliveryTime: string | null;
 }

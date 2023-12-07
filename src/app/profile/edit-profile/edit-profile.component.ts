@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
-import { User } from 'src/shared/model/user.model';
+import { Address, User, Vehicle } from 'src/shared/model/user.model';
 import { LocalStorageService } from 'src/shared/service/localStorage.service';
 import { UserService } from 'src/shared/service/user.service';
 import { generateUUID } from 'src/shared/utils/helper';
@@ -17,10 +16,9 @@ export class EditProfileComponent implements OnInit {
   isLoading: boolean;
   currentUser: User;
   constructor(
-    private route: ActivatedRoute,
     private userService: UserService,
     private snackbar: MatSnackBar,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
   ) {}
   userEditForm: FormGroup = null;
 
@@ -30,6 +28,8 @@ export class EditProfileComponent implements OnInit {
       type: new FormControl(null, [Validators.required]),
       receiver: new FormControl(null, [Validators.required]),
       location: new FormControl(null, [Validators.required]),
+      phone: new FormControl(null, [Validators.required]),
+      city: new FormControl(null, [Validators.required]),
       vehicleModel: new FormControl(null, [Validators.required]),
       vehicleColor: new FormControl(null, [Validators.required]),
       vehicleFuelType: new FormControl(null, [Validators.required]),
@@ -38,7 +38,9 @@ export class EditProfileComponent implements OnInit {
   }
 
   onUpdateUserDetails() {
+    // get userId from localStorage
     const userId: string = this.localStorageService.getItem('userId');
+    // Checks if the user's name input has been updated.
     if (this.userEditForm.value.name) {
       this.userService
         .setUserName(userId, this.userEditForm.value.name)
@@ -65,18 +67,22 @@ export class EditProfileComponent implements OnInit {
           }
         );
     }
+    // Checks if the user input type, receiver & location to update address.
     if (
       this.userEditForm.value.type ||
       this.userEditForm.value.receiver ||
       this.userEditForm.value.location
     ) {
-      // make call to update address API
-      const newAddress = {
+      // create address object
+      const newAddress: Address = {
         addressId: 'A' + generateUUID(),
         type: this.userEditForm.value.type,
         receiver: this.userEditForm.value.receiver,
         location: this.userEditForm.value.location,
+        phone: this.userEditForm.value.phone,
+        city: this.userEditForm.value.city
       };
+      // make call to save address
       this.userService.saveAddress(userId, newAddress).subscribe(
         (response) => {
           this.snackbar.open('Address added successfully', 'Dismiss', {
@@ -100,20 +106,22 @@ export class EditProfileComponent implements OnInit {
         }
       );
     }
+    // Checks if the user input vehicleColor, vehicleModel, vehicleFuelType  & vehicleCarType to update vehicle    
     if (
       this.userEditForm.value.vehicleModel ||
       this.userEditForm.value.vehicleColor ||
       this.userEditForm.value.vehicleFuelType ||
       this.userEditForm.value.vehicleCarType
     ) {
-      // make call to update vehicle API
-      const newVehicle = {
+      // create vehicle object
+      const newVehicle: Vehicle = {
         vehicleId: 'V' + generateUUID(),
         vehicleModel: this.userEditForm.value.vehicleModel,
         vehicleColor: this.userEditForm.value.vehicleColor,
         vehicleFuelType: this.userEditForm.value.vehicleFuelType,
         vehicleCarType: this.userEditForm.value.vehicleCarType,
       };
+      // make API call to save vehicle
       this.userService.saveVehicle(userId, newVehicle).subscribe(
         (res) => {
           this.snackbar.open('Vehicle addedd successfully', 'Dismiss', {

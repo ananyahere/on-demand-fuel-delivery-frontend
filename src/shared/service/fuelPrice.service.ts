@@ -20,20 +20,20 @@ export class FuelPriceService {
       stateName: 'Maharashtra',
       pricing: {
         petrol: {
-          price: 98.12,
-          unit: 'litre',
+          price: 106.12,
+          unit: 'Litre',
         },
         diesel: {
-          price: 88.19,
-          unit: 'litre',
+          price: 94.25,
+          unit: 'Litre',
         },
         cng: {
-          price: 52.17,
-          unit: 'kg',
+          price: 76,
+          unit: 'Kg',
         },
         lpg: {
-          price: 1509,
-          unit: '14.2kg',
+          price: 74.09,
+          unit: 'Kg',
         },
       },
     },
@@ -44,19 +44,19 @@ export class FuelPriceService {
       pricing: {
         petrol: {
           price: 96.76,
-          unit: 'litre',
+          unit: 'Litre',
         },
         diesel: {
           price: 89.66,
-          unit: 'litre',
+          unit: 'Litre',
         },
         cng: {
           price: 74.59,
-          unit: 'kg',
+          unit: 'Kg',
         },
         lpg: {
-          price: 1053,
-          unit: '14.2kg',
+          price: 74.15,
+          unit: 'Kg',
         },
       },
     },
@@ -67,19 +67,19 @@ export class FuelPriceService {
       pricing: {
         petrol: {
           price: 104.73,
-          unit: 'litre',
+          unit: 'Litre',
         },
         diesel: {
           price: 95.38,
-          unit: 'litre',
+          unit: 'Litre',
         },
         cng: {
           price: 52.17,
-          unit: 'kg',
+          unit: 'Kg',
         },
         lpg: {
-          price: 1400,
-          unit: '14.2kg',
+          price: 98.59,
+          unit: 'Kg',
         },
       },
     },
@@ -90,19 +90,19 @@ export class FuelPriceService {
       pricing: {
         petrol: {
           price: 104.58,
-          unit: 'litre',
+          unit: 'Litre',
         },
         diesel: {
           price: 97.49,
-          unit: 'litre',
+          unit: 'Litre',
         },
         cng: {
           price: 52.17,
-          unit: 'kg',
+          unit: 'Kg',
         },
         lpg: {
-          price: 1709,
-          unit: '14.2kg',
+          price: 120.35,
+          unit: 'Kg',
         },
       },
     },
@@ -113,19 +113,19 @@ export class FuelPriceService {
       pricing: {
         petrol: {
           price: 98.09,
-          unit: 'litre',
+          unit: 'Litre',
         },
         diesel: {
           price: 95.94,
-          unit: 'litre',
+          unit: 'Litre',
         },
         cng: {
           price: 52.17,
-          unit: 'kg',
+          unit: 'Kg',
         },
         lpg: {
-          price: 1513,
-          unit: '14.2kg',
+          price: 106.54,
+          unit: 'Kg',
         },
       },
     },
@@ -168,3 +168,127 @@ export class FuelPriceService {
     return updatedPrices;
   }
 }
+
+
+
+
+
+
+
+// fuelPriceList: any = [
+//   {
+//     cityId: 'mumbai',
+//     cityName: 'Mumbai',
+//     stateName: 'Maharashtra',
+//     pricing: {
+//       petrol: {
+//         price: 106.12,
+//         unit: 'litre',
+//       },
+//       diesel: {
+//         price: 94.25,
+//         unit: 'litre',
+//       },
+//       cng: {
+//         price: 76,
+//         unit: 'kg',
+//       },
+//       lpg: {
+//         price: 1052.5,
+//         unit: '14.2kg',
+//       },
+//     },
+//   },
+//   {
+//     cityId: 'delhi',
+//     cityName: 'Delhi',
+//     stateName: 'Delhi',
+//     pricing: {
+//       petrol: {
+//         price: 96.76,
+//         unit: 'litre',
+//       },
+//       diesel: {
+//         price: 89.66,
+//         unit: 'litre',
+//       },
+//       cng: {
+//         price: 74.59,
+//         unit: 'kg',
+//       },
+//       lpg: {
+//         price: 1053,
+//         unit: '14.2kg',
+//       },
+//     },
+//   },
+//   {
+//     cityId: 'bangalore',
+//     cityName: 'Bangalore',
+//     stateName: 'Karnataka',
+//     pricing: {
+//       petrol: {
+//         price: 104.73,
+//         unit: 'litre',
+//       },
+//       diesel: {
+//         price: 95.38,
+//         unit: 'litre',
+//       },
+//       cng: {
+//         price: 52.17,
+//         unit: 'kg',
+//       },
+//       lpg: {
+//         price: 1400,
+//         unit: '14.2kg',
+//       },
+//     },
+//   },
+//   {
+//     cityId: 'hyderabad',
+//     cityName: 'Hyderabad',
+//     stateName: 'Telangana',
+//     pricing: {
+//       petrol: {
+//         price: 104.58,
+//         unit: 'litre',
+//       },
+//       diesel: {
+//         price: 97.49,
+//         unit: 'litre',
+//       },
+//       cng: {
+//         price: 52.17,
+//         unit: 'kg',
+//       },
+//       lpg: {
+//         price: 1709,
+//         unit: '14.2kg',
+//       },
+//     },
+//   },
+//   {
+//     cityId: 'bhubaneswar',
+//     cityName: 'Bhubaneswar',
+//     stateName: 'Odisha',
+//     pricing: {
+//       petrol: {
+//         price: 98.09,
+//         unit: 'litre',
+//       },
+//       diesel: {
+//         price: 95.94,
+//         unit: 'litre',
+//       },
+//       cng: {
+//         price: 52.17,
+//         unit: 'kg',
+//       },
+//       lpg: {
+//         price: 1513,
+//         unit: '14.2kg',
+//       },
+//     },
+//   },
+// ];

@@ -43,55 +43,57 @@
           <h3 id="options-heading" class="sr-only">Fuel details</h3>
 
           <!-- Quantity -->
-          <div *ngIf="data.fuelDetails.fuelStock > 0">
-            <h4 class="text-sm font-bold text-gray-900">
-              Fuel Quantity information
-            </h4>
-            <form [formGroup]="addToCartForm">
-              <label
-                class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Quantity</label
-              >
-              <input
-                type="number"
-                [ngClass]="
-                  isQuantityValid()
-                    ? 'bg-red-50 border border-red-500 text-red-900 text-sm focus:ring-red-500 focus:border-red-500'
-                    : ''
-                "
-                formControlName="quantity"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              />
-              <p
-                *ngIf="isQuantityValid()"
-                class="mt-2 text-sm text-red-600 dark:text-red-500"
-              >
-                Please enter non-zero fuel quantity.
-              </p>
-              <label class="block mt-2 mb-2 text-sm font-medium text-gray-900"
-                >Fuel unit</label
-              >
-              <select
-                [ngClass]="
-                  isUnitValid()
-                    ? 'bg-red-50 border border-red-500 text-red-900 text-sm focus:ring-red-500 focus:border-red-500'
-                    : ''
-                "
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                formControlName="unit"
-              >
-                <option selected>Choose a unit</option>
-                <option value="liters">Liters</option>
-                <option value="kilograms">Kilograms</option>
-                <option value="gallons">Gallons</option>
-              </select>
-              <p
-                *ngIf="isUnitValid()"
-                class="mt-2 text-sm text-red-600 dark:text-red-500"
-              >
-                Please enter non-zero fuel quantity.
-              </p>
-            </form>
+          <div *ngIf="userRole.toLowerCase() === 'user'">
+            <div *ngIf="data.fuelDetails.fuelStock > 0">
+              <h4 class="text-sm font-bold text-gray-900">
+                Fuel Quantity information
+              </h4>
+              <form [formGroup]="addToCartForm">
+                <label
+                  class="block mt-4 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Quantity</label
+                >
+                <input
+                  type="number"
+                  [ngClass]="
+                    isQuantityValid()
+                      ? 'bg-red-50 border border-red-500 text-red-900 text-sm focus:ring-red-500 focus:border-red-500'
+                      : ''
+                  "
+                  formControlName="quantity"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                />
+                <p
+                  *ngIf="isQuantityValid()"
+                  class="mt-2 text-sm text-red-600 dark:text-red-500"
+                >
+                  Please enter non-zero fuel quantity.
+                </p>
+                <label class="block mt-2 mb-2 text-sm font-medium text-gray-900"
+                  >Fuel unit</label
+                >
+                <select
+                  [ngClass]="
+                    isUnitValid()
+                      ? 'bg-red-50 border border-red-500 text-red-900 text-sm focus:ring-red-500 focus:border-red-500'
+                      : ''
+                  "
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  formControlName="unit"
+                >
+                  <option selected>Choose a unit</option>
+                  <option value="liters">Liters</option>
+                  <option value="kilograms">Kilograms</option>
+                  <option value="gallons">Gallons</option>
+                </select>
+                <p
+                  *ngIf="isUnitValid()"
+                  class="mt-2 text-sm text-red-600 dark:text-red-500"
+                >
+                  Please select unit for fuel.
+                </p>
+              </form>
+            </div>
           </div>
 
           <!-- Supplier Details -->
@@ -100,23 +102,19 @@
               Fuel Suppliers Information
             </h4>
             <ul class="mt-4 max-w-md divide-y divide-gray-200">
-              <li
-                class="mt-2 pb-1"
-                *ngFor="let supplier of data.fuelDetails.fuelSuppliers"
-              >
+              <li class="mt-2 pb-1">
                 <div class="flex-1 min-w-0 flex flex-row justify-between">
-                  <p class="text-sm font-medium text-gray-900 truncate">
-                    {{ supplier.supplierName }}
-                  </p>
+                  <p>{{ data.fuelDetails.fuelSupplier.name }}</p>
                   <a
+                    *ngIf="userRole.toLowerCase() === 'admin'"
                     class="text-sm truncate text-[color:var(--darker-secondary-color)] hover:underline"
-                    *ngIf="
-                      userRole === 'admin' && data.fuelDetails.fuelStock <= 0
+                    [href]="
+                      'mailto:' +
+                      data.fuelDetails.fuelSupplier.email +
+                      '?subject=Request%20for%20500-liter%20tank%20of%20petrol&body=Hi%20there,%0A%0AI%20hope%20this%20email%20finds%20you%20well.%20I\'m%20writing%20to%20request%20a%20500-liter%20tank%20of%20petrol%20for%20our%20fuel%20inventory%20at%20TankOnTank.%20Can%20you%20please%20let%20me%20know%20the%20price%20and%20availability%20of%20this%3F%0A%0AThank%20you%20very%20much%20for%20your%20help!%20%0A%0ABest%20regards,%0A[Ananya%20Sharma]%0AAdmin%20of%20TankOnTank'
                     "
-                    [href]="'mailto:' + supplier.supplierName + '@gmail.com'"
-                    target="_blank"
-                  > 
-                    {{ supplier.supplierContactNo }}
+                  >
+                    Contact for Supply
                   </a>
                 </div>
               </li>

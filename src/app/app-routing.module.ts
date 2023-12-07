@@ -14,13 +14,20 @@ import { PaymentSuccessComponent } from 'src/shared/component/payment-success/pa
 import { PageNotFoundComponent } from 'src/shared/component/error/page-not-found/page-not-found.component';
 import { UnauthorizedComponent } from 'src/shared/component/error/unauthorized/unauthorized.component';
 import { AuthGuard } from 'src/shared/auth/auth.guard';
+import { AuthRedirectGuard } from 'src/shared/auth/auth-rediect.guard';
+import { InsightsComponent } from './insights/insights.component';
+import { FuelPricesComponent } from './fuel-prices/fuel-prices.component';
+import { AddFuelTankComponent } from './fuel-tank/add-fuel-tank/add-fuel-tank.component';
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', 
+    component: HomeComponent, 
+    canActivate: [AuthRedirectGuard] 
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'signup',
@@ -36,17 +43,16 @@ const appRoutes: Routes = [
   },
   {
     path: 'profile',
-
     children: [
       {
         path: ':id',
         component: ProfileComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'edit/:id',
         component: EditProfileComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
     ],
   },
@@ -56,19 +62,34 @@ const appRoutes: Routes = [
       {
         path: '',
         component: OrderComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: ':id',
         component: OrderDetailComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
     ],
   },
   {
     path: 'cart',
     component: CartComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'tank',
+    component: AddFuelTankComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'prices',
+    component: FuelPricesComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'inventory',
+    component: InsightsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'payment-success',
@@ -82,6 +103,9 @@ const appRoutes: Routes = [
     path: 'something-wrong',
     component: UnauthorizedComponent,
   },
+  {
+    path: '**', redirectTo: 'page-not-found'
+  }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(appRoutes)],

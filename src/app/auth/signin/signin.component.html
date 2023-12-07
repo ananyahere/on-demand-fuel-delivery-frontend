@@ -23,7 +23,7 @@
           "
         >
           <div>01</div>
-          Verify Catch Phase
+          Enter Catch Phase
         </div>
       </div>
       <!-- STEP-2 -->
@@ -66,7 +66,7 @@
     <!-- STEPS CONTENT -->
     <div class="bg-white p-5 rounded-lg mt-2">
       <!-- STEP-1 CONTENT -->
-      <form [formGroup]="verifyCatchPhaseForm" *ngIf="currentStep == 1">
+      <form [formGroup]="verifyCatchPhaseForm" *ngIf="currentStep === 1">
         <label class="block mb-2 text-sm font-medium text-gray-700">
           Enter your catch phase
         </label>
@@ -84,7 +84,7 @@
         </button>
       </form>
       <!-- STEP-2 CONTENT -->
-      <div *ngIf="currentStep == 2">
+      <div *ngIf="currentStep === 2">
         <form [formGroup]="signinForm">
           <label
             for="email"
@@ -121,7 +121,7 @@
         </button>
       </div>
       <!-- STEP-3 CONTENT -->
-      <div *ngIf="currentStep == 3">
+      <div *ngIf="currentStep === 3">
         <div
           class="bg-green-50 border-b border-green-400 text-green-800 text-sm p-4 flex justify-between"
         >
@@ -140,12 +140,12 @@
           >
             Set my location
           </button>
-        <button
+        <!-- <button
           class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)] transition ease-in-out"
           (click)="OnGoToDashboard()"
         >
           Go to your dashboard
-        </button>
+        </button> -->
       </div>
     </div>
   </div>

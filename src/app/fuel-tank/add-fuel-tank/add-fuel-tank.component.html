@@ -1,0 +1,81 @@
+<div class="p-4 container">
+  <div class="px-4 sm:px-0">
+    <h3 class="text-2xl font-semibold leading-7 text-gray-900">Add A Tank.</h3>
+  </div>
+  <div class="rounded-sm border border-gray-500 bg-white mt-5 p-3 mr-2 w-3/4">
+    <form 
+        [formGroup]="addFuelTankForm"
+    >
+      <label class="block mt-2 mb-2 text-sm font-medium text-gray-900"
+        >Fuel Type</label
+      >
+      <input
+        type="text"
+        formControlName="fuelType"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      />
+      <label class="block mt-2 mb-2 text-sm font-medium text-gray-900"
+        >Fuel Stock</label
+      >
+      <input
+        type="number"
+        formControlName="fuelStock"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      />
+      <label class="block mt-2 mb-2 text-sm font-medium text-gray-900"
+        >Supplier Name</label
+      >
+      <input
+        type="text"
+        formControlName="supplierName"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      />
+      <label class="block mt-2 mb-2 text-sm font-medium text-gray-900"
+        >Suppiler Mobile Number</label
+      >
+      <input
+        type="text"
+        formControlName="supplierContact"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      />
+      <label class="block mt-2 mb-2 text-sm font-medium text-gray-900"
+        >Supplier Email</label
+      >
+      <input
+        type="text"
+        formControlName="supplierEmail"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      />
+      <label class="block mt-2 mb-2 text-sm font-medium text-gray-900"
+        >Price offered per Liter (in hyderabad)</label
+      >
+      <input
+        type="number"
+        formControlName="basePriceHyd"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      />
+      <label class="block mt-2 mb-2 text-sm font-medium text-gray-900"
+        >Price offered per Liter (in bangalore)</label
+      >
+      <input
+        type="number"
+        formControlName="basePriceBlr"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      />
+      <label class="block mt-2 mb-2 text-sm font-medium text-gray-900"
+        >Price offered per Liter (in bhubaneswar)</label
+      >
+      <input
+        type="number"
+        formControlName="basePriceBhu"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      />
+      <a
+      class="mt-6 flex items-center justify-center border border-transparent bg-[color:var(--darker-secondary-color)] hover:bg-[color:var(--darker-secondary-hover-color)] text-white rounded-md px-6 py-3 text-base font-medium shadow-sm"
+      (click)="onAddTank()"
+    >
+      Add Tank
+    </a>
+    </form>
+  </div>
+</div>
