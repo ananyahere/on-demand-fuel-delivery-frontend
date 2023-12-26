@@ -45,7 +45,10 @@ export class NavbarComponent implements OnInit {
       }
     )
     // Retrieve current user city
-    this.userCity = this.userService.getCurrentUserCity()
+    // this.userCity = this.userService.getCurrentUserCity()
+    this.userService.getCurrentUserCityChange().subscribe(city => {
+      this.userCity = city
+    })
   }
 
   toggleDropdown() {

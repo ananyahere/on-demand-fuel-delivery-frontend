@@ -110,14 +110,13 @@ export class PlaceOrderDialogComponent implements OnInit {
     let currentOrder = {
       userId: userId,
       deliveryLoc: isCurrentLoc ? userLoc : this.getDeliveryLoc(),
-      totalAmount: this.total,
+      totalAmount: Math.ceil(this.total),
       scheduledTime: isImmediate ? null : new Date(generateDateTimeStamp(this.checkoutOrderForm.value["scheduleDate"], this.checkoutOrderForm.value["scheduleTime"])),
       orderItemsWithDetails: null,
       orderItems: this.data.orderItems,
       isImmediate: this.checkoutOrderForm.value["immediate"],
       deliveryTime: this.calculateDeliveryTime()
     }
-    console.log("createdOrderObject: ", currentOrder)
     this.orderService.placeOrder(currentOrder)
     .subscribe(
     response => {

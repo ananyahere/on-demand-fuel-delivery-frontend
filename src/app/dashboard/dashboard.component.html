@@ -13,7 +13,7 @@
     </div>
     <!-- FILTERS -->
     <div
-      *ngIf="!isFuelListLoading"
+      *ngIf="!isFuelListLoading && !isUserCityOther"
       class="flex flex-col md:flex-row justify-between w-2/6"
     >
       <!-- TYPE FILTER -->
@@ -230,9 +230,13 @@
     <app-loader></app-loader>
   </div>
 
-  <p *ngIf="isUserCityOther">
+  <!-- <p *ngIf="isUserCityOther">
     This location is not supported. Please change your location.
-  </p>
+  </p> -->
+  <div class="text-center" *ngIf="isUserCityOther">
+    <h1 class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">No Fuel Found</h1>
+    <p class="mt-6 text-base leading-7 text-gray-600">Sorry, this location is not supported. Please change your location..</p>
+  </div>
   <div
     *ngIf="!isUserCityOther"
     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"

@@ -2,7 +2,11 @@
   <!-- PAGE HEADING -->
   <div class="text-center text-3xl font-bold mt-24">
     <!-- BACK BUTTON -->
-  <fa-icon [icon]="faArrowLeft" class="text-xl items-start cursor-pointer" (click)="toHome()"></fa-icon>
+    <fa-icon
+      [icon]="faArrowLeft"
+      class="text-xl items-start cursor-pointer"
+      (click)="toHome()"
+    ></fa-icon>
     Signin Page
   </div>
   <!-- PAGE CONTENT -->
@@ -23,7 +27,7 @@
           "
         >
           <div>01</div>
-          Enter Catch Phase
+          Verify Credentials
         </div>
       </div>
       <!-- STEP-2 -->
@@ -40,7 +44,7 @@
           "
         >
           <div>02</div>
-          Enter Credentials
+          Verify Catch Phase
         </div>
       </div>
       <!-- STEP-3 -->
@@ -66,25 +70,38 @@
     <!-- STEPS CONTENT -->
     <div class="bg-white p-5 rounded-lg mt-2">
       <!-- STEP-1 CONTENT -->
-      <form [formGroup]="verifyCatchPhaseForm" *ngIf="currentStep === 1">
-        <label class="block mb-2 text-sm font-medium text-gray-700">
-          Enter your catch phase
-        </label>
-        <input
-          type="text"
-          formControlName="catchPhase"
-          name="catchPhase"
-          class="bg-gray-100 p-2 mx-2 mb-4 focus:outline-none rounded-lg w-full"
-        />
-        <button
-          class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
-          (click)="OnInputCatchPhase()"
+        <div  *ngIf="currentStep === 2 ">
+          <form        [formGroup]="verifyCatchPhaseForm"
+          *ngIf="isOTPSent"
         >
-          Verify
-        </button>
-      </form>
+          <label class="block mb-2 text-sm font-medium text-gray-700">
+            Enter your catch phase
+          </label>
+          <input
+            type="text"
+            formControlName="catchPhase"
+            name="catchPhase"
+            class="bg-gray-100 p-2 mx-2 mb-4 focus:outline-none rounded-lg w-full"
+          />
+        </form>
+        <button
+        *ngIf="!isOTPSent"
+        class="mt-4 mr-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+        (click)="OnSendCatchPhase()"
+      >
+        Get One-time Catch Phase on email
+      </button>
+      <button
+        class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+        (click)="OnInputCatchPhase()"
+        *ngIf="isOTPSent"
+      >
+        Verify
+      </button>
+        </div>
+
       <!-- STEP-2 CONTENT -->
-      <div *ngIf="currentStep === 2">
+      <div *ngIf="currentStep === 1">
         <form [formGroup]="signinForm">
           <label
             for="email"
@@ -134,12 +151,12 @@
             </div>
           </div>
         </div>
-          <button
-            class="mt-4 mr-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
-            (click)="onGetLocation()"
-          >
-            Set my location
-          </button>
+        <button
+          class="mt-4 mr-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+          (click)="onGetLocation()"
+        >
+          Set my location
+        </button>
         <!-- <button
           class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)] transition ease-in-out"
           (click)="OnGoToDashboard()"

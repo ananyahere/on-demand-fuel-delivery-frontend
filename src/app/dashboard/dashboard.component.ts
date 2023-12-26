@@ -92,7 +92,10 @@ export class DashboardComponent implements OnInit {
       value.fuelTypes.forEach((v: boolean, i) => {
         if(v) selectedFuelTypes.push(this.fuelTypeList[i])
       })
-      if(selectedFuelTypes.includes('All')) return;
+      if(selectedFuelTypes.includes('All')) {
+        this.fuelList = this.fuelListForCity
+        return
+      };
       const filteredFuels = this.fuelListForCity.filter(fuel => selectedFuelTypes.includes(fuel.fuelType))
       this.fuelList = filteredFuels
     })
@@ -103,7 +106,10 @@ export class DashboardComponent implements OnInit {
       value.fuelSuppliers.forEach((v: boolean, i) => {
         if(v) selectedSuppliers.push(this.fuelSupplierList[i])
       })
-      if(selectedSuppliers.includes('All')) return;
+      if(selectedSuppliers.includes('All')) {
+        this.fuelList = this.fuelListForCity
+        return
+      };
       const filteredFuels = this.fuelListForCity.filter(fuel => selectedSuppliers.includes(fuel.fuelSupplier?.name))
       this.fuelList = filteredFuels
     })

@@ -23,7 +23,7 @@
             "
           >
             <div>01</div>
-            Setup Catch Phase
+            Setup Credentials
           </div>
         </div>
         <!-- STEP-2 -->
@@ -40,7 +40,7 @@
             "
           >
             <div>02</div>
-            Setup Credentials
+            Verify Catch Phase
           </div>
         </div>
         <!-- STEP-3 -->
@@ -65,27 +65,51 @@
     <!-- SUCCESS MESSAGE -->
     <!-- STEPS CONTENT -->
     <div class="bg-white p-5 rounded-lg mt-2">
-        <!-- STEP-1 CONTENT -->
-        <form [formGroup]="setupCatchPhaseForm" *ngIf="currentStep == 1">
-          <label class="block mb-2 text-sm font-medium text-gray-700">
-            Enter your catch phase
-          </label>
-          <input
-            type="text"
-            formControlName="catchPhase"
-            name="catchPhase"
-            class="bg-gray-100 p-2 mx-2 mb-4 focus:outline-none rounded-lg w-full"
-          />
-          <button
-            type="submit"
-            class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
-            (click)="OnSetCatchPhase()"
-          >
-            Save
-          </button>
-        </form>
         <!-- STEP-2 CONTENT -->
-        <div *ngIf="currentStep == 2">
+        <div  *ngIf="currentStep === 2 ">
+          <form [formGroup]="setupCatchPhaseForm" *ngIf="isOTPSent">
+            <label class="block mb-2 text-sm font-medium text-gray-700">
+              Enter your catch phase
+            </label>
+            <input
+              type="text"
+              formControlName="catchPhase"
+              name="catchPhase"
+              class="bg-gray-100 p-2 mx-2 mb-4 focus:outline-none rounded-lg w-full"
+            />
+
+          </form>
+                      <!-- <button
+              type="submit"
+              class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+              (click)="OnSetCatchPhase()"
+            >
+              Save
+            </button> -->
+            <button
+            *ngIf="!isOTPSent"
+            class="mt-4 mr-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+            (click)="OnSendCatchPhase()"
+          >
+          Get One-time Catch Phase on email 
+          </button>
+          <!-- <button
+          class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+          (click)="OnInputCatchPhase()"
+        >
+          Set
+        </button> -->
+          <button
+            class="mt-4 bg-[color:var(--darker-secondary-color)] text-white py-2 px-4 rounded hover:bg-[color:var(--secondary-color)]"
+            (click)="verifyOneTimeCatchPhase()"
+            *ngIf="isOTPSent"
+          >
+            Verify
+          </button>
+        </div>
+
+        <!-- STEP-1 CONTENT -->
+        <div *ngIf="currentStep == 1">
           <form [formGroup]="signupForm">
             <label
               for="email"
@@ -130,7 +154,7 @@
             <div>
               <div class="flex items-center">
                 <p>
-                  <span class="font-bold"> Congatulations! </span>
+                  <span class="font-bold"> Congratulations! </span>
                   You have successfully signed up!
                 </p>
               </div>

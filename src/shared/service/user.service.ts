@@ -9,12 +9,12 @@ import { generateUUID } from 'src/shared/utils/helper';
 export class UserService {
   private BASE_URL_USER = 'http://localhost:8080/users';
   private currentUserLoc: Address = {
-    addressId: 'A' + generateUUID(),
-    type: 'current',
-    receiver: 'default-user',
-    location: '789 Oak Lane, Metropolis',
+    addressId: "A0xvhg1",
+    type: 'Current-82p',
+    receiver: 'Jane Smith',
+    location: "T-hub 2.0, T hub 2.0, Inorbit Mall Road, Madhapur, Hyderabad - 500032, TG, India",
     phone: '9876543210',
-    city: "Metropolis"
+    city: "Hyderabad"
   };
   // private currentUserCity: string = 'Hyderabad';
   currentUserCitySubject = new BehaviorSubject<string>("Hyderabad");

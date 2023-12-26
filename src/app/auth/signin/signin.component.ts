@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from 'src/shared/service/user.service';
 import { generateShortUUID, generateUUID } from 'src/shared/utils/helper';
 import { Address } from 'src/shared/model/user.model';
+import emailjs from '@emailjs/browser';
 
 @Component({
   selector: 'app-signin',
@@ -18,7 +19,8 @@ import { Address } from 'src/shared/model/user.model';
 })
 export class SigninComponent implements OnInit {
   faArrowLeft: IconDefinition = faArrowLeft;
-  catchPhase: string = 'ananya';
+  catchPhase: string = 'test-catch-phase';
+  oneTimeCatchPhase: string = '';
   currentStep: number = 1;
   verifyCatchPhaseForm: FormGroup = null;
   signinForm: FormGroup = null;
@@ -26,6 +28,7 @@ export class SigninComponent implements OnInit {
   isLocationLoading: boolean = false;
   latitude: number = 0;
   longitude: number = 0;
+  isOTPSent: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -68,12 +71,12 @@ export class SigninComponent implements OnInit {
       (userData: SignInResponseData) => {
         // verify catchPhase
         this.authService
-          .verifyCatchPhase(email, this.catchPhase)
+          .verifyCatchPhase(email,  "test-catch-phase")
           .subscribe((isMatch) => {
             if (isMatch) {
               this.isLoading = false;
               console.log('user logged in with correct phase');
-              this.currentStep = 3;
+              this.setStep(this.currentStep+1)
               console.log(this.currentStep)
             } else {
               this.snackbar.open(
@@ -279,5 +282,52 @@ export class SigninComponent implements OnInit {
 
   public toHome() {
     this.router.navigate(['/']);
+  }
+
+  generateOneTimeCatchPhase(): string{
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    this.oneTimeCatchPhase = otp.toString();
+    return otp.toString()
+  }
+
+  verifyOneTimeCatchPhase(): void{
+    if(!this.verifyCatchPhaseForm.valid){
+      this.snackbar.open("Please Enter Catch Phase.", "Dismiss", {
+        duration: 3000, // Snackbar duration in milliseconds
+        horizontalPosition: 'center', // Position of the snackbar on screen
+        verticalPosition: 'bottom' // Position of the snackbar on screen
+      })
+      return
+    }
+    const userInputCatchPhase = this.verifyCatchPhaseForm.value['catchPhase'];
+    if(userInputCatchPhase.toString == this.oneTimeCatchPhase){
+      console.log("correct catch phase")
+      this.setStep(this.currentStep + 1);
+    } 
+  }
+
+  OnSendCatchPhase(){
+    const catchPhase = this.generateOneTimeCatchPhase()
+    console.log("generated catch phase: ", catchPhase)
+    emailjs.send("service_oobe4i4","template_fg1qwvv", {
+      "message": catchPhase
+    }, "s8px8g5kv_n6wsVF0")
+    .then((result) => {
+      console.log(result)
+      this.isOTPSent = true;
+      this.snackbar.open("Catch Phase send successfully! Please check your email.", "Dismiss", {
+        duration: 3000, // Snackbar duration in milliseconds
+        horizontalPosition: 'center', // Position of the snackbar on screen
+        verticalPosition: 'bottom' // Position of the snackbar on screen
+      })
+    }),
+    (err) => {
+      console.log(err)
+      this.snackbar.open("An error occurred while sending catch-phase. Please try again later.", "Dismiss", {
+        duration: 3000, // Snackbar duration in milliseconds
+        horizontalPosition: 'center', // Position of the snackbar on screen
+        verticalPosition: 'bottom' // Position of the snackbar on screen
+      })
+    }
   }
 }
