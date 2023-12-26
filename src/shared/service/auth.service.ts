@@ -86,7 +86,7 @@ export class AuthService {
     ).pipe(
       switchMap((credentials) => {
         return this.http.post<SignUpResponseData>(
-          'http://localhost:8080/register',
+          'https://tankontap.up.railway.app/register',
           {
             userEmail: email,
             userPassword: password,
@@ -133,7 +133,7 @@ export class AuthService {
       switchMap((credentials) => {
         console.log("Success from firebase!")
         return this.http.post<SignInResponseData>(
-          'http://localhost:8080/authenticate',
+          'https://tankontap.up.railway.app/authenticate',
           {
             userName: email,
             userPassword: password,
@@ -170,7 +170,7 @@ export class AuthService {
 
   public verifyCatchPhase(username: string, phase: string) {
     return this.http
-    .get<any>(`http://localhost:8080/catchphase?email=${username}`, {
+    .get<any>(`https://tankontap.up.railway.app/catchphase?email=${username}`, {
       headers: {
         'No-Auth': 'True',
       },
@@ -190,7 +190,7 @@ export class AuthService {
   //     this.afAuth.signInWithPhoneNumber(phone, appVerifier)).pipe(
   //       switchMap(res => {
   //         return this.http.post<SignInResponseData>(
-  //           'http://localhost:8080/authenticate', {
+  //           'https://tankontap.up.railway.app/authenticate', {
   //             userName: 'janesmith@example.com',
   //             userPassword: 'janesmith@example.com'
   //           },{
@@ -215,7 +215,7 @@ export class AuthService {
 
   public loginWithMobile(){
     return this.http.post<SignInResponseData>(
-      'http://localhost:8080/authenticate', {
+      'https://tankontap.up.railway.app/authenticate', {
         userName: 'trialuser@gmail.com',
         userPassword: 'trialuser@gmail.com'
       }, {
@@ -275,7 +275,7 @@ export class AuthService {
 //         const username = email;
 //         // Make a call to the BASE_URL/register endpoint
 //         return this.http.post(
-//           'http://localhost:8080/register',
+//           'https://tankontap.up.railway.app/register',
 //           {
 //             userEmail: email,
 //             userPassword: password,
@@ -328,7 +328,7 @@ export class AuthService {
 //       switchMap((authData) => {
 //         console.log('call to localhost');
 //         return this.http.post(
-//           'http://localhost:8080/authenticate',
+//           'https://tankontap.up.railway.app/authenticate',
 //           {
 //             userName: email,
 //             userPassword: password,

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PaymentService {
-  private BASE_URL_PAYMENT = 'http://localhost:8080/payment';
+  private BASE_URL_PAYMENT = 'https://tankontap.up.railway.app/payment';
   constructor(private http: HttpClient) {}
 
   /**

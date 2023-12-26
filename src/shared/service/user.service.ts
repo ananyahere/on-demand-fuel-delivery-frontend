@@ -7,7 +7,7 @@ import { generateUUID } from 'src/shared/utils/helper';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private BASE_URL_USER = 'http://localhost:8080/users';
+  private BASE_URL_USER = 'https://tankontap.up.railway.app/users';
   private currentUserLoc: Address = {
     addressId: "A0xvhg1",
     type: 'Current-82p',
@@ -145,7 +145,7 @@ export class UserService {
    * @returns An Observable that emits the HTTP response from the server.
    */
   public setUserLocation(userId: string, location: string) {
-    return this.http.post<any>(`http://localhost:8080/city?user_id=${userId}`, {
+    return this.http.post<any>(`https://tankontap.up.railway.app/city?user_id=${userId}`, {
       city: location,
     });
   }

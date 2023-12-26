@@ -8,7 +8,7 @@ import { FuelItem } from '../model/fuel.model';
   providedIn: 'root',
 })
 export class CartService {
-  private BASE_URL_CART = 'http://localhost:8080/cart';
+  private BASE_URL_CART = 'https://tankontap.up.railway.app/cart';
   private cart: Cart;
   private cartChangeSubject: BehaviorSubject<Cart[]> = new BehaviorSubject<Cart[]>([]);
   cartChange$: Observable<Cart[]> = this.cartChangeSubject.asObservable();

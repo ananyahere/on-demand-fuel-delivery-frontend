@@ -7,7 +7,7 @@ import { Fuel } from '../model/fuel.model';
   providedIn: 'root',
 })
 export class FuelService {
-  private BASE_URL_FUEL = 'http://localhost:8080/fuels';
+  private BASE_URL_FUEL = 'https://tankontap.up.railway.app/fuels';
   private warehouses = [
     {
       location: "Devender Colony, Kompally, Hyderabad, Telangana",

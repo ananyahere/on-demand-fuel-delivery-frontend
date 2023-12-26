@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class OrderService {
-  private BASE_URL_ORDER = 'http://localhost:8080/orders';
+  private BASE_URL_ORDER = 'https://tankontap.up.railway.app/orders';
   currentOrder: Order = {
     orderId: null,
     userId: null,
